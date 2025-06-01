@@ -1,5 +1,39 @@
-import { MantineThemeOverride } from "@mantine/core";
+import { AvatarProps, ButtonProps, createTheme, MantineThemeOverride, PasswordInputProps, TextInputProps } from "@mantine/core";
 
-export const theme: MantineThemeOverride = {
-    primaryColor: "dark"
+const defaultProps = {
+    size: "md",
+    radius: "sm",
+};
+
+export const theme: MantineThemeOverride = createTheme({
+    primaryColor: "dark",
+    fontFamily: "Poppins, sans-serif",
+    components: {
+        Button: {
+            defaultProps: {
+                ...defaultProps,
+                fw: 500,
+            } as ButtonProps,
+        },
+        TextInput: {
+            defaultProps: {
+                ...defaultProps,
+                variant: "filled",
+                withAsterisk: true,
+            } as TextInputProps,
+        },
+        PasswordInput: {
+            defaultProps: {
+                ...defaultProps,
+                variant: "filled",
+                withAsterisk: true,
+            } as PasswordInputProps,
+        },
+        Avatar: {
+            defaultProps: {
+                bg: "linear-gradient(135deg, #999, #333)",
+            } as AvatarProps,
+        }
+    }
 }
+)

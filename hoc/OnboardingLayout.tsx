@@ -1,3 +1,4 @@
+import { LoginModal, SignupModal } from "@/components/Auth";
 import { Footer, Header } from "@/components/common";
 import { LoginContextProvider } from "@/contexts/login.context";
 import { SignUpContextProvider } from "@/contexts/signup.context";
@@ -19,6 +20,8 @@ export function OnboardingLayout({
                     </section>
                     <Footer />
                 </main>
+                <LoginModal />
+                <SignupModal />
             </SignUpContextProvider>
         </LoginContextProvider>
     )

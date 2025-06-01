@@ -15,6 +15,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "MediCare - Your Health, Our Priority",
   description: "MediCare is your trusted healthcare partner, providing top-notch medical services and expert care for a healthier you.",
+  icons: {
+    icon: "/medicare_logo.png"
+  }
 };
 
 export default function Layout({
