@@ -1,13 +1,9 @@
-import { Doctors } from "@/components/Doctors"
-import { Hero } from "@/components/Home"
-import { Specialties } from "@/components/Specialties"
+import { Dashboard } from "@/components/Dashboard"
 
 export default function Page() {
     return (
         <>
-            <Hero />
-            <Specialties />
-            <Doctors />
+            <Dashboard />
         </>
     )
 }

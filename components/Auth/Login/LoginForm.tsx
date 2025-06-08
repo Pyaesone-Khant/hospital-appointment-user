@@ -1,12 +1,16 @@
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
+import { useUserStore } from "@/states/zustand/user";
 import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
 
     const { closeLoginModal } = useLoginContext();
-    const { openSignUpModal } = useSignUpContext()
+    const { openSignUpModal } = useSignUpContext();
+    const router = useRouter();
 
     const form = useForm({
         mode: "uncontrolled",
@@ -23,7 +27,26 @@ export function LoginForm() {
     })
 
     const handleSubmit = (values: typeof form.values) => {
-        console.log(values)
+        const { email, password } = values;
+        console.log("Login submitted with values:", { email, password });
+        const dummyUser = {
+            id: 1,
+            name: "John Doe",
+            email: email,
+            role: "patient",
+        } as User;
+
+        // Simulate successful login
+        useUserStore.getState().setUser(dummyUser);
+        useUserStore.getState().setIsAuthenticated(true);
+        notifications.show({
+            title: "Login Successful",
+            message: `Welcome back, ${dummyUser.name}!`,
+            color: "green",
+            autoClose: 3000,
+            withCloseButton: true,
+        });
+        router.replace("/")
     }
 
     return (

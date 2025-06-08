@@ -2,13 +2,18 @@
 
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
-import { Button, Group } from "@mantine/core";
+import { useUserStore } from "@/states/zustand/user";
+import { Button, Group, Text } from "@mantine/core";
 import Link from "next/link";
+import { LogoutModal } from "./LogoutModal";
 
 export function Header() {
 
     const { openLoginModal } = useLoginContext();
     const { openSignUpModal } = useSignUpContext();
+
+    const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+    const user = useUserStore((state) => state.user);
 
     return (
         <header className="bg-white sticky top-0 z-50 shadow">
@@ -18,20 +23,33 @@ export function Header() {
                 >
                     <h1 className="text-2xl font-bold">MediCare</h1>
                 </Link>
-                <Group>
-                    <Button
-                        variant="subtle"
-                        onClick={openLoginModal}
-                    >
-                        Login
-                    </Button>
-                    <Button
-                        onClick={openSignUpModal}
-                        className="bg-primary text-white hover:bg-primary-dark"
-                    >
-                        Sign Up
-                    </Button>
-                </Group>
+                {
+                    isAuthenticated ? (
+                        <Group>
+                            <Text
+                                c={"gray.7"}
+                            >
+                                Welcome, {user?.name ?? "Unknown"}
+                            </Text>
+                            <LogoutModal />
+                        </Group>
+                    ) : (
+                        <Group>
+                            <Button
+                                variant="subtle"
+                                onClick={openLoginModal}
+                            >
+                                Login
+                            </Button>
+                            <Button
+                                onClick={openSignUpModal}
+                                className="bg-primary text-white hover:bg-primary-dark"
+                            >
+                                Sign Up
+                            </Button>
+                        </Group>
+                    )
+                }
             </div>
         </header>
     )
