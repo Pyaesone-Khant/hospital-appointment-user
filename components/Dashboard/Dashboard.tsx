@@ -1,6 +1,7 @@
 import { Card, Group, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { Calendar, Clock, FileText } from "lucide-react";
+import { AppointmentList } from "../Appointments";
 
 const StatisticsData = [
     {
@@ -76,6 +77,8 @@ export function Dashboard() {
                     ))
                 }
             </div>
+
+            <AppointmentList />
         </section>
     )
 }

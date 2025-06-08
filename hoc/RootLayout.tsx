@@ -1,4 +1,7 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { Header } from "@/components/common";
+import { useUserStore } from "@/states/zustand/user";
 import React from "react";
 
 export function RootLayout({
@@ -7,11 +10,22 @@ export function RootLayout({
     children: React.ReactNode;
 }) {
 
-    const isAuthenticated = false; // Replace with actual authentication logic
+    const isAuthenticated = useUserStore((state) => state.isAuthenticated)
 
-    if (!isAuthenticated) {
-        return redirect("/on-boarding")
-    }
+    // if (!isAuthenticated) {
+    //     return redirect("/on-boarding")
+    // }
 
-    return children;
+    return (
+        <main
+            className="min-h-screen flex flex-col w-full"
+        >
+            <Header />
+            <section
+                className="flex-1 container mx-auto px-4 py-6"
+            >
+                {children}
+            </section>
+        </main>
+    )
 }
