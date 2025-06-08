@@ -20,7 +20,7 @@ export function AuthModal({
                 withCloseButton={false}
                 classNames={{
                     content: "bg-primary-gradient ",
-                    body: "flex flex-1 h-full !py-10 bg-primary-gradient",
+                    body: "flex flex-1 h-full bg-primary-gradient",
                 }}
                 transitionProps={{
                     transition: "pop",
@@ -37,12 +37,13 @@ export function AuthModal({
                             <ArrowLeft />
                         }
                         className="!w-fit"
+                        size="md"
                         onClick={closeAuthModal}
                     >
                         Back to Home
                     </Button>
                     <div
-                        className="bg-white my-auto p-8 rounded-lg shadow space-y-6 "
+                        className="bg-white p-8 rounded-lg shadow space-y-6 my-auto"
                     >
                         {children}
                     </div>

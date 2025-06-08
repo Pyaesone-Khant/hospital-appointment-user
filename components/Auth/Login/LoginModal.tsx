@@ -1,6 +1,5 @@
 "use client";
 
-import { MediCareLogo } from "@/components/common/icons";
 import { useLoginContext } from "@/contexts/login.context";
 import { Text, Title } from "@mantine/core";
 import { AuthModal } from "../AuthModal";
@@ -16,9 +15,6 @@ export function LoginModal() {
                 opened={opened}
                 closeAuthModal={closeLoginModal}
             >
-                <MediCareLogo
-                    className="mx-auto"
-                />
                 <article
                     className="text-center"
                 >
