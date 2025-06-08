@@ -29,3 +29,14 @@ interface User {
     email: string;
     role: "patient" | "doctor" | "admin" | "nurse";
 }
+
+interface MedicalRecord {
+    id: number;
+    title: string;
+    doctor: Doctor;
+    diagnosis: string;
+    prescription: string;
+    date: string;
+    note?: string;
+    status: "Active" | "Archived";
+}

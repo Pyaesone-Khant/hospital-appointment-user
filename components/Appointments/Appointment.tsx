@@ -1,3 +1,6 @@
+"use client";
+
+import { useResponsive } from "@/hooks";
 import { Badge, Card, Group, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { Calendar, Clock } from "lucide-react";
@@ -7,6 +10,9 @@ export function Appointment({
 }: {
     appointment: Appointment;
 }) {
+
+    const { isMobile } = useResponsive();
+
     return (
         <Card
             shadow="sm"
@@ -20,7 +26,7 @@ export function Appointment({
                 mb="xs"
             >
                 <Title
-                    order={4}
+                    order={isMobile ? 5 : 4}
                 >
                     {appointment.doctor.name}
                 </Title>
@@ -47,6 +53,7 @@ export function Appointment({
             </Group>
             <Text
                 mb={"xs"}
+                fz={isMobile ? "sm" : "md"}
             >
                 {appointment.doctor.specialty.name}
             </Text>
@@ -62,6 +69,7 @@ export function Appointment({
                     />
                     <Text
                         fw={500}
+                        fz={isMobile ? "sm" : "md"}
                     >
                         {dayjs(appointment.date).format("MMM D, YYYY")}
                     </Text>
@@ -74,6 +82,7 @@ export function Appointment({
                     />
                     <Text
                         fw={500}
+                        fz={isMobile ? "sm" : "md"}
                     >
                         {appointment.time}
                     </Text>

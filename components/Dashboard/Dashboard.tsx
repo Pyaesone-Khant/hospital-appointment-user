@@ -1,27 +1,39 @@
-import { Card, Group, Text, Title } from "@mantine/core";
-import dayjs from "dayjs";
-import { Calendar, Clock, FileText } from "lucide-react";
-import { AppointmentList } from "../Appointments";
+"use client";
 
-const StatisticsData = [
+import { useResponsive } from "@/hooks";
+import { Card, Divider, Group, Text, Title } from "@mantine/core";
+import dayjs from "dayjs";
+import { DynamicIcon, IconName } from "lucide-react/dynamic";
+import { DashboardTabContents } from "./DashboardTabContents";
+
+interface StatisticsDataType {
+    title: string;
+    value: string | number;
+    icon: IconName;
+}
+
+const StatisticsData: StatisticsDataType[] = [
     {
         title: "Upcoming Appointments",
         value: 2,
-        icon: <Calendar />,
+        icon: "calendar",
     },
     {
         title: "Medical Records",
         value: 8,
-        icon: <FileText />,
+        icon: "file-text",
     },
     {
         title: "Last Checkup",
         value: dayjs().subtract(1, "month").format("MMM DD, YYYY"),
-        icon: <Clock />,
+        icon: "clock",
     },
 ]
 
 export function Dashboard() {
+
+    const { isMobile } = useResponsive();
+
     return (
         <section
             className="space-y-6"
@@ -30,12 +42,13 @@ export function Dashboard() {
                 className="space-y-2"
             >
                 <Title
-                    order={2}
+                    order={isMobile ? 3 : 2}
                 >
                     Dashboard
                 </Title>
                 <Text
                     c={"gray.8"}
+                    fz={isMobile ? "sm" : "md"}
                 >
                     Manage your health records, appointments, and more in one place.
                 </Text>
@@ -52,24 +65,26 @@ export function Dashboard() {
                             padding="lg"
                             radius="md"
                             withBorder
-
                         >
                             <Group
                                 justify="space-between"
                             >
                                 <Text
-                                    size="lg"
+                                    size={isMobile ? "md" : "lg"}
                                     fw={500}
                                     c={"gray.7"}
                                 >
                                     {stat.title}
                                 </Text>
-                                {stat.icon}
+                                <DynamicIcon
+                                    name={stat.icon}
+                                    size={isMobile ? 20 : 24}
+                                />
                             </Group>
                             <Text
                                 mt="sm"
                                 fw={600}
-                                fz="h2"
+                                fz={isMobile ? "xl" : "2xl"}
                             >
                                 {stat.value}
                             </Text>
@@ -78,7 +93,9 @@ export function Dashboard() {
                 }
             </div>
 
-            <AppointmentList />
+            <Divider />
+
+            <DashboardTabContents />
         </section>
     )
 }

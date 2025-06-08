@@ -1,5 +1,8 @@
-import { Text, Title } from "@mantine/core"
-import { Appointment } from "./Appointment"
+"use client";
+
+import { useResponsive } from "@/hooks";
+import { Text, Title } from "@mantine/core";
+import { Appointment } from "./Appointment";
 
 const data: Appointment[] = [
     {
@@ -43,18 +46,23 @@ const data: Appointment[] = [
 ]
 
 export function AppointmentList() {
+
+    const { isMobile } = useResponsive();
+
     return (
         <section
             className="p-6 border border-black/10 shadow rounded-md space-y-6"
         >
             <article>
                 <Title
-                    order={2}
+                    order={isMobile ? 3 : 2}
+                    fw={600}
                 >
                     Upcoming Appointments
                 </Title>
                 <Text
                     c={"gray.7"}
+                    fz={isMobile ? "sm" : "md"}
                 >
                     Your upcoming appointments are listed below. You can view details, reschedule, or cancel them as needed.
                 </Text>
