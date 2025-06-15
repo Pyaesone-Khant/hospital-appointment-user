@@ -2,6 +2,7 @@
 
 import { Header } from "@/components/common";
 import { useUserStore } from "@/states/zustand/user";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export function RootLayout({
@@ -12,9 +13,9 @@ export function RootLayout({
 
     const isAuthenticated = useUserStore((state) => state.isAuthenticated)
 
-    // if (!isAuthenticated) {
-    //     return redirect("/on-boarding")
-    // }
+    if (!isAuthenticated) {
+        return redirect("/on-boarding")
+    }
 
     return (
         <main

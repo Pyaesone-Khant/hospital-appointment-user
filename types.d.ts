@@ -40,3 +40,18 @@ interface MedicalRecord {
     note?: string;
     status: "Active" | "Archived";
 }
+
+enum RoleEnum {
+    STAFF = "ROLE_STAFF",
+    DOCTOR = "ROLE_DOCTOR",
+    PATIENT = "ROLE_PATIENT",
+    ADMIN = "ROLE_ADMIN",
+    NURSE = "ROLE_NURSE",
+}
+
+interface JWT {
+    accessToken: string;
+    type: string;
+    expiredAt: string;
+    role: RoleEnum;
+}
