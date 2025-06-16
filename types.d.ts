@@ -1,20 +1,11 @@
-interface Doctor {
-    id: number;
-    name: string;
-    specialty: Specialty;
-    rating: number;
-    availableSlots: string[];
-    experience: number,
-    rating: number,
-    availability: string,
-}
-
 interface Appointment {
-    id: number;
-    doctor: Doctor;
-    date: string;
-    time: string;
-    status: "Pending" | "Confirmed" | "Cancelled";
+    id: number,
+    patientName: string,
+    doctorName: string,
+    dateTime: string,
+    confirmed: boolean,
+    cancelled: boolean
+
 }
 
 interface Specialty {
@@ -75,4 +66,12 @@ interface Nurse extends Pick<Doctor, "fullName" | "email" | "address" | "phone" 
 interface Staff extends Pick<User, "email" | "address" | "phone" | "active"> {
     staffId: number;
     fullName: string;
+}
+
+interface Payment {
+    id: number;
+    patientName: string;
+    amount: number;
+    method: string;
+    paymentDate: string
 }
