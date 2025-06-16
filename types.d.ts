@@ -27,7 +27,10 @@ interface User {
     id: number;
     name: string;
     email: string;
-    role: "patient" | "doctor" | "admin" | "nurse";
+    address: string;
+    phone: string
+    role: "USER" | "DOCTOR" | "NURSE" | "STAFF" | "ADMIN";
+    active?: boolean;
 }
 
 interface MedicalRecord {
@@ -54,4 +57,22 @@ interface JWT {
     type: string;
     expiredAt: string;
     role: RoleEnum;
+}
+
+interface Doctor extends Pick<User, "email" | "address" | "phone" | "active"> {
+    doctorId: number;
+    fullName: string;
+    specialization: string;
+    department: string;
+    assignedNurse: string;
+}
+
+interface Nurse extends Pick<Doctor, "fullName" | "email" | "address" | "phone" | "active"> {
+    nurseId: number;
+    assignedDoctor: string;
+}
+
+interface Staff extends Pick<User, "email" | "address" | "phone" | "active"> {
+    staffId: number;
+    fullName: string;
 }
