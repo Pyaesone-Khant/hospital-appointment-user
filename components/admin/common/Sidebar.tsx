@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 
 const data = [
     { link: '/admin', label: 'Dashbaord', icon: "layout-dashboard" },
+    { link: '/admin/appointments', label: 'Appointments', icon: "calendar" },
     { link: '/admin/patients', label: 'Patients', icon: "users" },
     { link: '/admin/doctors', label: 'Doctors', icon: "stethoscope" },
     { link: '/admin/nurses', label: 'Nurses', icon: "briefcase-medical" },
@@ -23,7 +24,7 @@ export function Sidebar() {
     const pathname = usePathname();
 
     return (
-        <nav className="flex flex-col gap-4 max-w-60 w-full h-screen sticky top-0 bg-[var(--mantine-color-blue-0)] border-r border-blue-200">
+        <nav className="flex flex-col gap-4 min-w-60 max-w-min w-full h-screen sticky top-0 bg-[var(--mantine-color-blue-0)] border-r border-blue-200">
             <Link
                 href={"/admin"}
             >

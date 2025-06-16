@@ -1,4 +1,7 @@
-import { Sidebar } from "@/components/admin/common";
+// import { Sidebar } from "@/components/admin/common";
+import React from "react";
+
+const Sidebar = React.lazy(() => import('@/components/admin/common/Sidebar').then(module => ({ default: module.Sidebar })));
 
 export function AdminLayout({
     children,
@@ -9,7 +12,7 @@ export function AdminLayout({
         <main className="min-h-screen flex w-full">
             <Sidebar />
             <section
-                className="flex-1 p-4"
+                className="flex-1 p-4 overflow-hidden"
             >
                 {children}
             </section>

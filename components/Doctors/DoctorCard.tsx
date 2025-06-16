@@ -2,7 +2,7 @@
 
 import { useLoginContext } from "@/contexts/login.context";
 import { Avatar, Badge, Button, Card, Stack, Text } from "@mantine/core";
-import { Calendar, Star } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 export function DoctorCard({
     doctor
@@ -31,29 +31,26 @@ export function DoctorCard({
                     size="lg"
                     fw={600}
                 >
-                    {doctor.name}</Text>
+                    {doctor.fullName}</Text>
                 <Badge
                     variant="outline"
                     bg={"gray.3"}
                 >
-                    {doctor.specialty.name}
+                    {doctor.specialization}
                 </Badge>
             </Stack>
             <Stack>
                 <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Experience:</span>
-                    <span className="font-medium">{doctor.experience}</span>
+                    <span className="text-gray-600">Email: </span>
+                    <span className="font-medium">{doctor.email}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Rating:</span>
-                    <div className="flex items-center">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                        <span className="font-medium">{doctor.rating}</span>
-                    </div>
+                    <span className="text-gray-600">Phone: </span>
+                    <span className="font-medium">{doctor.phone}</span>
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                     <Calendar className="w-4 h-4 mr-2" />
-                    <span>{doctor.availability}</span>
+                    <span>{doctor.active ? "Available" : "Unavailable"}</span>
                 </div>
                 <Button
                     onClick={openLoginModal}

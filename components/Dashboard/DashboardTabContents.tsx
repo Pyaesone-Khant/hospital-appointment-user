@@ -1,5 +1,5 @@
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
-import { AppointmentList } from "../Appointments";
+import { Appointments } from "../Appointments";
 import { MedicalRecordList } from "../MedicalRecords";
 
 export function DashboardTabContents() {
@@ -20,7 +20,7 @@ export function DashboardTabContents() {
             </TabsList>
 
             <TabsPanel value="appointments">
-                <AppointmentList />
+                <Appointments />
             </TabsPanel>
 
             <TabsPanel value="medical_records">

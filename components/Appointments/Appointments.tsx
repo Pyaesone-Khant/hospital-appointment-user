@@ -6,46 +6,42 @@ import { Appointment } from "./Appointment";
 
 const data: Appointment[] = [
     {
-        id: 1,
-        date: '2023-10-01',
-        time: '10:00 AM',
-        doctor: {
-            id: 1,
-            name: 'Dr. Smith',
-            specialty: {
-                id: 1,
-                name: 'Cardiology',
-                description: 'Heart and blood vessel specialist'
-            },
-            availableSlots: ['10:00 AM', '11:00 AM'],
-            experience: 10,
-            rating: 4.5,
-            availability: 'Monday to Friday'
-        },
-        status: 'Confirmed'
+        "id": 1,
+        "patientName": "Win Aye",
+        "doctorName": "Win Aye",
+        "dateTime": "2025-06-11T10:00",
+        "confirmed": false,
+        "cancelled": true
     },
     {
-        id: 2,
-        date: '2023-10-02',
-        time: '11:00 AM',
-        doctor: {
-            id: 2,
-            name: 'Dr. Johnson',
-            specialty: {
-                id: 2,
-                name: 'Dermatology',
-                description: 'Skin specialist'
-            },
-            availableSlots: ['11:00 AM', '12:00 PM'],
-            experience: 8,
-            rating: 4.0,
-            availability: 'Monday to Saturday'
-        },
-        status: 'Pending'
+        "id": 2,
+        "patientName": "Win Aye",
+        "doctorName": "Win Aye",
+        "dateTime": "2025-06-11T10:00",
+        "confirmed": false,
+        "cancelled": true
+    },
+    {
+        "id": 3,
+        "patientName": "Pyae Pyae",
+        "doctorName": "Win Aye",
+        "dateTime": "2025-06-11T10:00",
+        "confirmed": true,
+        "cancelled": false
+    },
+    {
+        "id": 4,
+        "patientName": "Pyae Pyae",
+        "doctorName": "Win Aye",
+        "dateTime": "2025-06-11T10:00",
+        "confirmed": false,
+        "cancelled": false
     }
 ]
 
-export function AppointmentList() {
+
+
+export function Appointments() {
 
     const { isMobile } = useResponsive();
 
