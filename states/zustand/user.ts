@@ -1,19 +1,21 @@
+import { getJwtToken } from "@/services/getJwtToken";
 import { create } from "zustand";
 
 type UserState = {
-    jwt: string | null;
-    setJwt: (jwt: string | null) => void;
-    user: User | null;
-    setUser: (user: User | null) => void;
+    jwt: JWT | undefined;
+    setJwt: (jwt: JWT | undefined) => void;
     isAuthenticated: boolean;
-    setIsAuthenticated: (isAuthenticated: boolean) => void;
+    // setIsAuthenticated: (isAuthenticated: boolean) => void;
+    clearJwt: () => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
-    jwt: null,
+    jwt: getJwtToken().jwt,
     setJwt: (jwt) => set({ jwt }),
-    user: null,
-    setUser: (user) => set({ user }),
-    isAuthenticated: false,
-    setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated })
-}))
+    isAuthenticated: !!getJwtToken().jwt,
+    // setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+    clearJwt: () => set({
+        jwt: undefined,
+        isAuthenticated: false,
+    })
+}));
