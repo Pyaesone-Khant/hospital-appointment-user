@@ -5,7 +5,6 @@ import { useUserStore } from "@/states/zustand/user";
 import { Button, Group, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LogOut } from "lucide-react";
-import { redirect } from "next/navigation";
 
 export function LogoutModal() {
 
@@ -14,7 +13,6 @@ export function LogoutModal() {
     const handleLogout = () => {
         useUserStore.getState().clearJwt();
         getJwtToken().removeJwtToken();
-        redirect("/login");
     }
 
     return (
