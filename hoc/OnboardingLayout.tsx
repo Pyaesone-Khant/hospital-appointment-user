@@ -1,7 +1,10 @@
+"use client";
+
 import { LoginModal, SignupModal } from "@/components/Auth";
 import { Footer, Header } from "@/components/common";
 import { LoginContextProvider } from "@/contexts/login.context";
 import { SignUpContextProvider } from "@/contexts/signup.context";
+import { useUserStore } from "@/states/zustand/user";
 import { redirect } from "next/navigation";
 
 export function OnboardingLayout({
@@ -10,9 +13,9 @@ export function OnboardingLayout({
     children: React.ReactNode;
 }) {
 
-    const isAuthenticated = false; // Replace with actual authentication check
+    const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
-    if (isAuthenticated) {
+    if (isAuthenticated()) {
         return redirect("/");
     }
 

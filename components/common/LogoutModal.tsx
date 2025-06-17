@@ -1,17 +1,20 @@
 "use client";
 
+import { getJwtToken } from "@/services/getJwtToken";
+import { useUserStore } from "@/states/zustand/user";
 import { Button, Group, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LogOut } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export function LogoutModal() {
 
     const [opened, { toggle }] = useDisclosure(false);
 
     const handleLogout = () => {
-        // Logic to handle logout
-        console.log("User logged out");
-        toggle(); // Close the modal after logout
+        useUserStore.getState().clearJwt();
+        getJwtToken().removeJwtToken();
+        redirect("/login");
     }
 
     return (

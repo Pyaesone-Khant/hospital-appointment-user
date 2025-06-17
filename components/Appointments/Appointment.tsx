@@ -78,7 +78,7 @@ export function Appointment({
                         fw={500}
                         fz={isMobile ? "sm" : "md"}
                     >
-                        {appointment.dateTime}
+                        {dayjs(appointment.dateTime).format("h:mm A")}
                     </Text>
                 </Group>
             </Group>

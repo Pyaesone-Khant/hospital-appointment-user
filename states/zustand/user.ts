@@ -4,18 +4,18 @@ import { create } from "zustand";
 type UserState = {
     jwt: JWT | undefined;
     setJwt: (jwt: JWT | undefined) => void;
-    isAuthenticated: boolean;
+    isAuthenticated: () => boolean;
     // setIsAuthenticated: (isAuthenticated: boolean) => void;
     clearJwt: () => void;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>((set, get) => ({
     jwt: getJwtToken().jwt,
     setJwt: (jwt) => set({ jwt }),
-    isAuthenticated: !!getJwtToken().jwt,
+    isAuthenticated: () => !!get().jwt,
     // setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
     clearJwt: () => set({
         jwt: undefined,
-        isAuthenticated: false,
+        isAuthenticated: () => false,
     })
 }));

@@ -13,7 +13,6 @@ export function Header() {
     const { openSignUpModal } = useSignUpContext();
 
     const isAuthenticated = useUserStore((state) => state.isAuthenticated);
-    const user = useUserStore((state) => state.user);
 
     return (
         <header className="bg-white sticky top-0 z-50 shadow">
@@ -24,12 +23,12 @@ export function Header() {
                     <h1 className="text-2xl font-bold">MediCare</h1>
                 </Link>
                 {
-                    isAuthenticated ? (
+                    isAuthenticated() ? (
                         <Group>
                             <Text
                                 c={"gray.7"}
                             >
-                                Welcome, {user?.name ?? "Unknown"}
+                                Welcome back!
                             </Text>
                             <LogoutModal />
                         </Group>

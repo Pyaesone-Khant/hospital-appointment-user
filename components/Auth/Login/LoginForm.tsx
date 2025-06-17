@@ -1,5 +1,6 @@
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
+import { getJwtToken } from "@/services/getJwtToken";
 import { useUserStore } from "@/states/zustand/user";
 import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
@@ -29,24 +30,24 @@ export function LoginForm() {
     const handleSubmit = (values: typeof form.values) => {
         const { email, password } = values;
         console.log("Login submitted with values:", { email, password });
-        const dummyUser = {
-            id: 1,
-            name: "John Doe",
-            email: email,
-            role: "patient",
-        } as User;
+        const jwt = {
+            accessToken: "mockAccess",
+            type: "Bearer",
+            expiredAt: new Date(Date.now() + 3600 * 1000).toISOString(), // 1 hour from now
+            role: "ROLE_ADMIN", // Mock role, adjust as needed
+        } as JWT;
 
         // Simulate successful login
-        useUserStore.getState().setUser(dummyUser);
-        useUserStore.getState().setIsAuthenticated(true);
+        useUserStore.getState().setJwt(jwt);
+        getJwtToken().setJwtToken(jwt);
         notifications.show({
             title: "Login Successful",
-            message: `Welcome back, ${dummyUser.name}!`,
+            message: `Welcome back!`,
             color: "green",
             autoClose: 3000,
             withCloseButton: true,
         });
-        router.replace("/")
+        router.replace("/");
     }
 
     return (

@@ -1,9 +1,14 @@
 "use client";
 
-import { Header } from "@/components/common";
 import { useUserStore } from "@/states/zustand/user";
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 import React from "react";
+
+const Header = dynamic(
+    () => import("@/components/common/Header").then((mod) => mod.Header),
+    { ssr: false }
+)
 
 export function RootLayout({
     children,
@@ -13,7 +18,7 @@ export function RootLayout({
 
     const isAuthenticated = useUserStore((state) => state.isAuthenticated)
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
         return redirect("/on-boarding")
     }
 
