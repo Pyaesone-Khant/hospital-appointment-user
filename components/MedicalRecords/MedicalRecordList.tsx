@@ -7,57 +7,24 @@ import { MedicalRecord } from "./MedicalRecord";
 const data: MedicalRecord[] = [
     {
         id: 1,
-        title: "Annual Checkup",
-        doctor: {
-            id: 1,
-            name: "Dr. Smith",
-            specialty: { id: 1, name: "Cardiology" },
-            rating: 4.5,
-            availableSlots: ["2023-10-01T10:00", "2023-10-01T11:00"],
-            experience: 10,
-            availability: "Monday to Friday"
-        },
+        doctorName: "Dr. Smith",
         diagnosis: "Hypertension",
-        prescription: "Lisinopril 10mg",
-        date: "2023-09-30",
-        note: "Follow up in 2 weeks",
-        status: "Active"
+        createdDate: "2023-09-30",
+        patientName: "John Doe",
     },
     {
         id: 2,
-        title: "Skin Condition Follow-up",
-        doctor: {
-            id: 2,
-            name: "Dr. Johnson",
-            specialty: { id: 2, name: "Dermatology" },
-            rating: 4.0,
-            availableSlots: ["2023-10-02T09:00", "2023-10-02T10:00"],
-            experience: 8,
-            availability: "Monday to Saturday"
-        },
+        doctorName: "Dr. Johnson",
         diagnosis: "Eczema",
-        prescription: "Hydrocortisone cream",
-        date: "2023-09-29",
-        note: "Apply twice daily",
-        status: "Archived"
+        createdDate: "2023-09-29",
+        patientName: "Jane Doe",
     },
     {
         id: 3,
-        title: "Pediatric Checkup",
-        doctor: {
-            id: 3,
-            name: "Dr. Lee",
-            specialty: { id: 3, name: "Pediatrics" },
-            rating: 4.8,
-            availableSlots: ["2023-10-03T08:00", "2023-10-03T09:00"],
-            experience: 12,
-            availability: "Monday to Friday"
-        },
-        diagnosis: "Asthma",
-        prescription: "Albuterol inhaler",
-        date: "2023-09-28",
-        note: "Use as needed",
-        status: "Active"
+        doctorName: "Dr. Brown",
+        diagnosis: "Diabetes",
+        createdDate: "2023-09-28",
+        patientName: "Alice Smith",
     }
 ]
 
@@ -85,7 +52,7 @@ export function MedicalRecordList() {
             </article>
 
             <div
-                className="space-y-4"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
             >
                 {data.map((record) => (
                     <MedicalRecord

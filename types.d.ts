@@ -26,13 +26,10 @@ interface User {
 
 interface MedicalRecord {
     id: number;
-    title: string;
-    doctor: Doctor;
+    patientName: string;
+    doctorName: string;
     diagnosis: string;
-    prescription: string;
-    date: string;
-    note?: string;
-    status: "Active" | "Archived";
+    createdDate: string;
 }
 
 enum RoleEnum {
