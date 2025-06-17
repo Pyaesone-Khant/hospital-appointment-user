@@ -1,6 +1,10 @@
 import { SlideUp, StatusBadge } from "@/components/common"
+import { AppointmentStatus } from "@/constants"
+import { Group } from "@mantine/core"
 import dayjs from "dayjs"
 import { Column, MantineTable } from "../common/MantineTable"
+import { CancelAppointmentModal } from "./CancelAppointmentModal"
+import { ConfirmAppointmentModal } from "./ConfirmAppointmentModal"
 
 const data: Appointment[] = [
     {
@@ -75,6 +79,23 @@ export function AppointmentList() {
             ),
             textAlign: 'center'
         },
+        {
+            header: "Actions",
+            accessor: (appointment) => (
+                <Group
+                    justify="center"
+                >
+                    <ConfirmAppointmentModal
+                        {...appointment}
+                    />
+                    <CancelAppointmentModal
+                        {...appointment}
+                    />
+                </Group>
+            ),
+            textAlign: 'center'
+
+        }
     ]
 
     return (
@@ -98,10 +119,10 @@ export function AppointmentList() {
 const getAppointmentStatus = (appointment: Appointment) => {
     switch (true) {
         case appointment.confirmed:
-            return "Confirmed";
+            return AppointmentStatus.CONFIRMED;
         case appointment.cancelled:
-            return "Cancelled";
+            return AppointmentStatus.CANCELLED;
         default:
-            return "Pending";
+            return AppointmentStatus.PENDING;
     }
 }

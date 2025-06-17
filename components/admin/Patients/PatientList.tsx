@@ -69,11 +69,13 @@ export function PatientList() {
             header: "Actions",
             accessor: (user: User) => (
                 <ActionIcon
+                    variant="subtle"
+                    color="blue"
                     onClick={() => alert(`Edit patient ${user.name}`)}
                     size="lg"
                 >
                     <Eye
-                        size={20}
+                        size={18}
                     />
                 </ActionIcon>
             ),
