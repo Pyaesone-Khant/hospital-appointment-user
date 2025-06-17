@@ -1,5 +1,7 @@
 import { SlideUp, StatusBadge } from "@/components/common"
+import { Group } from "@mantine/core"
 import { Column, MantineTable } from "../common/MantineTable"
+import { AssignDoctorShiftModal } from "./AssignDoctorShiftModal"
 
 const data: Doctor[] = [
     {
@@ -64,6 +66,20 @@ export function DoctorList() {
                     {row.active ? "Available" : "Unavailable"}
                 </StatusBadge>
             ),
+            textAlign: "center"
+        },
+        {
+            header: "Actions",
+            accessor: (doctor) => (
+                <Group
+                    justify="center"
+                >
+                    <AssignDoctorShiftModal
+                        {...doctor}
+                    />
+                </Group>
+            ),
+            textAlign: "center"
         }
     ]
 
