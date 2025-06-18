@@ -42,7 +42,7 @@ export function ChangePasswordForm() {
                     Change Password
                 </Title>
                 <Text
-                    c={"gray.7"}
+                    c={"gray.6"}
                 >
                     Update your password to keep your account secure.
                 </Text>

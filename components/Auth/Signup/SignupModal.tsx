@@ -25,7 +25,7 @@ export function SignupModal() {
                         Become a MediCare Member
                     </Title>
                     <Text
-                        c={"gray.7"}
+                        c={"gray.6"}
                     >
                         Join MediCare Hospital to book appointments and manage your health.
                     </Text>

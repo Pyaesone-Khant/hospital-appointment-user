@@ -1,3 +1,4 @@
+import { useForgotPasswordContext } from "@/contexts/forgot-password.context";
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
 import { getJwtToken } from "@/services/getJwtToken";
@@ -11,6 +12,7 @@ export function LoginForm() {
 
     const { closeLoginModal } = useLoginContext();
     const { openSignUpModal } = useSignUpContext();
+    const { openForgotPasswordModal } = useForgotPasswordContext();
     const router = useRouter();
 
     const form = useForm({
@@ -67,6 +69,22 @@ export function LoginForm() {
                     placeholder="Password"
                     {...form.getInputProps('password')}
                 />
+
+                <Button
+                    type="button"
+                    color="blue"
+                    variant="transparent"
+                    onClick={() => {
+                        closeLoginModal();
+                        openForgotPasswordModal();
+                    }}
+                    size="sm"
+                    px={0}
+                    ml={"auto"}
+                    display={"flex"}
+                >
+                    Forgot Password?
+                </Button>
 
                 <Button
                     type="submit"

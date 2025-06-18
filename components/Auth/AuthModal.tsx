@@ -40,7 +40,7 @@ export function AuthModal({
                         size="md"
                         onClick={closeAuthModal}
                     >
-                        Back to Home
+                        Back
                     </Button>
                     <div
                         className="bg-white p-8 rounded-lg shadow space-y-6 my-auto"
