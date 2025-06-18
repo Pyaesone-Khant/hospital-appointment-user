@@ -2,11 +2,15 @@
 
 import { getJwtToken } from "@/services/getJwtToken";
 import { useUserStore } from "@/states/zustand/user";
-import { Button, Group, Modal, Text } from "@mantine/core";
+import { Button, ButtonProps, Group, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LogOut } from "lucide-react";
 
-export function LogoutModal() {
+export function LogoutModal({
+    buttonProps
+}: {
+    buttonProps?: ButtonProps
+}) {
 
     const [opened, { toggle }] = useDisclosure(false);
 
@@ -19,6 +23,7 @@ export function LogoutModal() {
         <>
             <Button
                 variant="outline"
+                {...buttonProps}
                 color="red"
                 onClick={toggle}
                 leftSection={

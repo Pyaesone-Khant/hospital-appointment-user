@@ -1,5 +1,6 @@
 "use client";
 
+import { LogoutModal } from '@/components/common';
 import { MediCareLogo } from '@/components/common/icons';
 import { Button, Group, Stack } from '@mantine/core';
 import { DynamicIcon, IconName } from 'lucide-react/dynamic';
@@ -72,23 +73,15 @@ export function Sidebar() {
                     ))
                 }
             </Stack>
-            <Button
-                variant="filled"
-                color='red'
-                leftSection={
-                    <DynamicIcon
-                        name="log-out"
-                        className='h-4 w-4'
-                        size={16}
-                    />
-                }
-                radius={0}
-                classNames={{
-                    inner: "!justify-start",
+            <LogoutModal
+                buttonProps={{
+                    variant: "filled",
+                    radius: 0,
+                    classNames: {
+                        inner: "!justify-start",
+                    },
                 }}
-            >
-                Logout
-            </Button>
+            />
         </nav >
     );
 }
