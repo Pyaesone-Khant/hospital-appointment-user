@@ -92,6 +92,7 @@ export function LoginForm() {
                         closeLoginModal();
                         openSignUpModal();
                     }}
+                    color="blue"
                 >
                     Sign Up
                 </Button>
