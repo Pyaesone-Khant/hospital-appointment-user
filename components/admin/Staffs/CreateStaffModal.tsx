@@ -1,3 +1,4 @@
+import { RoleEnum } from "@/constants";
 import { Button, Flex, Modal, PasswordInput, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
@@ -15,7 +16,9 @@ export function CreateStaffModal() {
             address: "Singapore",
             password: "asdfgh",
             confirmedPassword: "asdfgh",
-            role: "STAFF"
+            role: RoleEnum.STAFF,
+            specialization: "",
+            department: ""
         },
 
         validate: {
@@ -25,6 +28,19 @@ export function CreateStaffModal() {
             address: (value) => (value.length < 5 ? "Address must be at least 5 characters" : null),
             password: (value) => (value.length < 6 ? "Password must be at least 6 characters" : null),
             confirmedPassword: (value, values) => (value !== values.password ? "Passwords do not match" : null),
+            role: (value) => (value ? null : "Role is required"),
+            department: (value, { role }) => {
+                if (role === RoleEnum.DOCTOR && !value) {
+                    return "Department is required for doctors";
+                }
+                return null;
+            },
+            specialization: (value, { role }) => {
+                if (role === RoleEnum.DOCTOR && !value) {
+                    return "Specialization is required for doctors";
+                }
+                return null;
+            }
         }
     });
 
@@ -98,6 +114,24 @@ export function CreateStaffModal() {
                         }))}
                         {...form.getInputProps("role")}
                     />
+
+                    {
+                        form.values.role === RoleEnum.DOCTOR && (
+                            <>
+                                <TextInput
+                                    label="Department"
+                                    placeholder="Enter department"
+                                    {...form.getInputProps("department")}
+                                />
+
+                                <TextInput
+                                    label="Specialization"
+                                    placeholder="Enter specialization"
+                                    {...form.getInputProps("specialization")}
+                                />
+                            </>
+                        )
+                    }
 
                     <Flex
                         gap={12}

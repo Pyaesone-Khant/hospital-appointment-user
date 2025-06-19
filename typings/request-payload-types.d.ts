@@ -31,6 +31,8 @@ interface ResetPasswordRequest {
 interface CreateStaffRequest extends SignupRequest {
     address: string;
     role: "STAFF" | "DOCTOR" | "NURSE";
+    department?: string;
+    specialization?: string;
 }
 
 interface AssignNurseRequest {
@@ -74,4 +76,8 @@ interface CreateFeeRequest {
 
 interface CreateDepartmentRequest {
     name: string;
+}
+
+interface UpdateAppointmentStatusRequest {
+    confirmed: boolean;
 }

@@ -5,7 +5,7 @@ export const createApi = (apiInstance: AxiosInstance) => {
         // auth
         signup: (data: SignupRequest) => apiInstance.post('/auth/signup', data),
 
-        login: (data: LoginRequest) => apiInstance.post('/auth/login', data),
+        login: (data: LoginRequest): Promise<JWT> => apiInstance.post('/auth/login', data),
 
         changePassword: (data: ChangePasswordRequest) => apiInstance.post('/auth/change-password', data),
 
@@ -45,7 +45,7 @@ export const createApi = (apiInstance: AxiosInstance) => {
 
         getUserPaymentHistory: () => apiInstance.get('/users/my-payments'),
 
-        getUserMedicalHistory: () => apiInstance.get('/users/viewMedicalRecord'),
+        getUserMedicalRecordHistory: () => apiInstance.get('/users/viewMedicalRecord'),
 
         getUserAppointments: () => apiInstance.get('/users/viewAppointment'),
 
@@ -54,13 +54,13 @@ export const createApi = (apiInstance: AxiosInstance) => {
         // doctor
         getDoctorInfo: () => apiInstance.get('/doctors/getDoctorInfo'),
 
-        getDoctorShifts: () => apiInstance.get('/doctors/getDoctorSchedule'),
+        getAssignedShifts: () => apiInstance.get('/doctors/getDoctorSchedule'),
 
         getDoctorAppointments: () => apiInstance.get('/doctors/viewAppointment'),
 
         addMedicalRecord: (data: AddMedicalRecordRequest) => apiInstance.post('/doctors/addMedicalRecord', data),
 
-        getMedicalRecord: () => apiInstance.get(`/doctors/viewMedicalRecord`),
+        getMedicalRecords: () => apiInstance.get(`/doctors/viewMedicalRecord`),
 
         // nurse
         getNurseShifts: () => apiInstance.get('/nurses/getNurseSchedules'),
@@ -70,7 +70,7 @@ export const createApi = (apiInstance: AxiosInstance) => {
         // staff
         getAllAppointments: () => apiInstance.get('/staffs/viewAppointment'),
 
-        updateAppointmentStatus: (appointmentId: number) => apiInstance.put(`/staffs/confirmedAppointment/${appointmentId}`),
+        updateAppointmentStatus: (appointmentId: number, data: UpdateAppointmentStatusRequest) => apiInstance.put(`/staffs/confirmedAppointment/${appointmentId}`, data),
 
         getAllMedicalRecords: () => apiInstance.get('/staffs/viewMedicalRecord'),
 
@@ -85,6 +85,10 @@ export const createApi = (apiInstance: AxiosInstance) => {
         createDepartment: (data: CreateDepartmentRequest) => apiInstance.post("/staffs/departments", data),
 
         getAllPayments: () => apiInstance.get('/staffs/payments'),
+
+        getAllDepartments: () => apiInstance.get('/staffs/departments'),
+
+        addDepartment: (data: CreateDepartmentRequest) => apiInstance.post('/staffs/addDepartment', data),
     })
 }
 

@@ -32,7 +32,7 @@ interface MedicalRecord {
     createdDate: string;
 }
 
-enum RoleEnum {
+enum JWTRoleEnum {
     STAFF = "ROLE_STAFF",
     DOCTOR = "ROLE_DOCTOR",
     PATIENT = "ROLE_PATIENT",
@@ -44,7 +44,7 @@ interface JWT {
     accessToken: string;
     type: string;
     expiredAt: string;
-    role: RoleEnum;
+    role: JWTRoleEnum;
 }
 
 interface Doctor extends Pick<User, "email" | "address" | "phone" | "active"> {
