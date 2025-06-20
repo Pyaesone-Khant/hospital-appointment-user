@@ -1,5 +1,8 @@
 import { SlideUp, StatusBadge } from "@/components/common";
+import { Group } from "@mantine/core";
 import { Column, MantineTable } from "../common/MantineTable";
+import { DeleteEmployeeModal } from "../Employees";
+import { UpdateEmployeeModal } from "../Employees/UpdateEmployeeModal";
 
 const data: Staff[] = [
     {
@@ -48,6 +51,19 @@ export function StaffList() {
                 </StatusBadge>
             ),
         },
+        {
+            header: "Actions",
+            accessor: (row) => (
+                <Group>
+                    <UpdateEmployeeModal
+                        employee={row as Staff}
+                    />
+                    <DeleteEmployeeModal
+                        employeeId={row.staffId}
+                    />
+                </Group>
+            ),
+        }
     ];
 
     return (

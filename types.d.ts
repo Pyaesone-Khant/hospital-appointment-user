@@ -14,13 +14,19 @@ interface Specialty {
     description?: string;
 }
 
+enum RoleEnum {
+    DOCTOR = "DOCTOR",
+    NURSE = "NURSE",
+    STAFF = "STAFF",
+}
+
 interface User {
     id: number;
     name: string;
     email: string;
     address: string;
     phone: string
-    role: "USER" | "DOCTOR" | "NURSE" | "STAFF" | "ADMIN";
+    role: RoleEnum;
     active?: boolean;
 }
 
@@ -56,6 +62,7 @@ interface Doctor extends Pick<User, "email" | "address" | "phone" | "active"> {
 }
 
 interface Nurse extends Pick<Doctor, "fullName" | "email" | "address" | "phone" | "active"> {
+    nurseId: number;
     nurseId: number;
     assignedDoctor: string;
 }

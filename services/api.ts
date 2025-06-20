@@ -16,7 +16,7 @@ export const createApi = (apiInstance: AxiosInstance) => {
         // admin
         createStaff: (data: CreateStaffRequest) => apiInstance.post('/admin/createStaff', data),
 
-        updateStaff: (staffId: number, data: CreateStaffRequest) => apiInstance.put(`/admin/updateStaff/${staffId}`, data),
+        updateStaff: (employee: number, data: CreateStaffRequest) => apiInstance.put(`/admin/updateStaff/${employee}`, data),
 
         deleteStaff: (staffId: number) => apiInstance.delete(`/admin/removeStaff/${staffId}`),
 

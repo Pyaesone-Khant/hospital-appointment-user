@@ -1,5 +1,6 @@
 import { SlideUp, StatusBadge } from "@/components/common"
 import { Column, MantineTable } from "../common/MantineTable"
+import { DeleteEmployeeModal } from "../Employees"
 
 const data: Nurse[] = [
     {
@@ -46,6 +47,16 @@ export function NurseList() {
                 </StatusBadge>
             ),
             header: 'Active Status',
+        },
+        {
+            accessor: (row) => (
+                <>
+                    <DeleteEmployeeModal
+                        employeeId={row.nurseId}
+                    />
+                </>
+            ),
+            header: 'Actions',
         }
     ]
 

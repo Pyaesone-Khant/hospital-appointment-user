@@ -1,6 +1,7 @@
 import { SlideUp, StatusBadge } from "@/components/common"
 import { Group } from "@mantine/core"
 import { Column, MantineTable } from "../common/MantineTable"
+import { DeleteEmployeeModal } from "../Employees"
 import { AssignDoctorShiftModal } from "./AssignDoctorShiftModal"
 
 const data: Doctor[] = [
@@ -76,6 +77,9 @@ export function DoctorList() {
                 >
                     <AssignDoctorShiftModal
                         {...doctor}
+                    />
+                    <DeleteEmployeeModal
+                        employeeId={doctor.doctorId}
                     />
                 </Group>
             ),

@@ -7,9 +7,9 @@ interface LoginRequest {
 interface SignupRequest {
     name: string;
     email: string;
-    password: string;
+    password?: string;
     phone: string;
-    confirmedPassword: string;
+    confirmedPassword?: string;
 }
 
 interface ChangePasswordRequest {

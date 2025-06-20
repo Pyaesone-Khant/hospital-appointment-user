@@ -125,7 +125,7 @@ export const useCreateEmployee = () => {
 export const useUpdateEmployee = () => {
     const { mutate, isPending: isLoading, ...rest } = useMutation({
         mutationKey: ["updateStaff"],
-        mutationFn: ({ staffId, data }: { staffId: number; data: CreateStaffRequest }) => CLIENT_API.updateStaff(staffId, data),
+        mutationFn: ({ employeeId, data }: { employeeId: number; data: CreateStaffRequest }) => CLIENT_API.updateStaff(employeeId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["getAllStaffs", "getAllDoctors", "getAllNurses"]
