@@ -53,11 +53,6 @@ export function NurseList() {
         <SlideUp
             className="space-y-6"
         >
-            <h2
-                className="text-2xl font-semibold"
-            >
-                Nurse List
-            </h2>
             <MantineTable
                 columns={columns}
                 data={data}

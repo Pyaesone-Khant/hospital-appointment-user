@@ -2,24 +2,52 @@
 
 import { LogoutModal } from '@/components/common';
 import { MediCareLogo } from '@/components/common/icons';
-import { Button, Group, Stack } from '@mantine/core';
+import { Group, NavLink, Stack } from '@mantine/core';
 import { DynamicIcon, IconName } from 'lucide-react/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const data = [
-    { link: '/admin', label: 'Dashbaord', icon: "layout-dashboard" },
-    { link: '/admin/appointments', label: 'Appointments', icon: "calendar" },
-    { link: '/admin/patients', label: 'Patients', icon: "users" },
-    { link: '/admin/doctors', label: 'Doctors', icon: "stethoscope" },
-    { link: '/admin/nurses', label: 'Nurses', icon: "briefcase-medical" },
-    { link: '/admin/payments', label: 'Payments', icon: "credit-card" },
-    { link: '/admin/settings', label: 'Settings', icon: "settings" },
+const NavLinks = [
+    {
+        label: 'Dashboard',
+        href: '/admin',
+        icon: 'layout-dashboard',
+    },
+    {
+        label: 'Employees',
+        href: '/admin/employees',
+        icon: 'user-search',
+    },
+    {
+        label: 'Appointments',
+        href: '/admin/appointments',
+        icon: 'calendar',
+    },
+    {
+        label: 'Patients',
+        href: '/admin/patients',
+        icon: 'users',
+    },
+    {
+        label: 'Payments',
+        href: '/admin/payments',
+        icon: 'credit-card',
+    },
+    {
+        label: 'Settings',
+        href: '/admin/settings',
+        icon: 'settings',
+    }
 ] satisfies {
-    link: string;
     label: string;
-    icon: IconName
-}[];
+    href: string;
+    icon: IconName;
+    children?: {
+        label: string;
+        href: string;
+        icon: IconName;
+    }[];
+}[]
 
 export function Sidebar() {
     const pathname = usePathname();
@@ -45,32 +73,30 @@ export function Sidebar() {
             </Link>
             <Stack
                 className='flex-1 overflow-y-auto'
-                gap={8}
+                gap={4}
             >
                 {
-                    data.map((item) => (
-                        <Button
-                            component={Link}
-                            variant={checkIsActive(item.link, pathname) ? "filled" : "subtle"}
-                            key={JSON.stringify(item)}
-                            href={item.link}
-                            data-active={checkIsActive(item.link, pathname) || undefined}
-                            leftSection={
-                                <DynamicIcon
-                                    name={item.icon}
-                                    size={20}
-                                    data-active={checkIsActive(item.link, pathname) || undefined}
-                                />
-                            }
-                            classNames={{
-                                root: "min-h-11",
-                                inner: "!justify-start",
-                            }}
-                            radius={0}
-                        >
-                            {item.label}
-                        </Button>
-                    ))
+                    NavLinks.map((item) => {
+                        return (
+                            <NavLink
+                                key={JSON.stringify(item)}
+                                label={item.label}
+                                href={item.href}
+                                component={Link}
+                                leftSection={
+                                    <DynamicIcon
+                                        name={item.icon}
+                                        size={18}
+                                    />
+                                }
+                                classNames={{
+                                    label: "!text-base"
+                                }}
+                                active={checkIsActive(item.href, pathname)}
+                                variant={(checkIsActive(item.href, pathname) ? "filled" : "light")}
+                            />
+                        )
+                    })
                 }
             </Stack>
             <LogoutModal

@@ -87,9 +87,6 @@ export function DoctorList() {
         <SlideUp
             className="space-y-6"
         >
-            <div>
-                <h3 className="text-2xl font-semibold">Doctors List</h3>
-            </div>
             <MantineTable
                 columns={columns}
                 data={data}
