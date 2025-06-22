@@ -1,6 +1,9 @@
 "use client";
 
+import { RoleEnum } from "@/constants";
 import { useResponsive } from "@/hooks";
+import { useGetEmployees } from "@/hooks/query-hooks/useAdmin";
+import { useBookAppointment } from "@/hooks/query-hooks/usePatient";
 import { Button, Select, Text, Textarea, Title } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -48,13 +51,23 @@ export function BookAppointment() {
         },
     })
 
+    const { mutate, isLoading } = useBookAppointment();
+
+    const { data } = useGetEmployees(RoleEnum.DOCTOR);
+
     const handleSubmit = (values: typeof form.values) => {
-        const dateTime = dayjs(values.dateTime).toISOString();
+        const dateTime = dayjs(values.dateTime).format('YYYY-MM-DDTHH:mm');
         const appointmentData = {
             ...values,
             dateTime,
         };
-        console.log(appointmentData)
+        mutate(appointmentData, {
+            onSuccess: (data) => {
+                if (data?.success) {
+                    form.reset();
+                }
+            }
+        })
     }
 
 
@@ -84,9 +97,9 @@ export function BookAppointment() {
                 <Select
                     label="Select Doctor"
                     placeholder="Choose a doctor"
-                    data={doctors.map((doctor) => ({
-                        value: doctor.doctorId.toString(),
-                        label: doctor.fullName,
+                    data={data?.map((doctor) => ({
+                        value: (doctor as Doctor).doctorId.toString(),
+                        label: (doctor as Doctor).fullName,
                     }))}
                     size="md"
                     {...form.getInputProps('doctorId')}
@@ -122,6 +135,7 @@ export function BookAppointment() {
                     size="md"
                     color="blue"
                     mt="md"
+                    loading={isLoading}
                 >
                     Book Appointment
                 </Button>

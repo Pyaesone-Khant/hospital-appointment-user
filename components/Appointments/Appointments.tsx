@@ -1,49 +1,21 @@
 "use client";
 
+import { JWTRoleEnum } from "@/constants";
 import { useResponsive } from "@/hooks";
+import { useGetAppointments } from "@/hooks/query-hooks/useAppointment";
+import { useUserStore } from "@/states/zustand/user";
 import { Text, Title } from "@mantine/core";
 import { Appointment } from "./Appointment";
-
-const data: Appointment[] = [
-    {
-        "id": 1,
-        "patientName": "Win Aye",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": false,
-        "cancelled": true
-    },
-    {
-        "id": 2,
-        "patientName": "Win Aye",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": false,
-        "cancelled": true
-    },
-    {
-        "id": 3,
-        "patientName": "Pyae Pyae",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": true,
-        "cancelled": false
-    },
-    {
-        "id": 4,
-        "patientName": "Pyae Pyae",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": false,
-        "cancelled": false
-    }
-]
-
-
 
 export function Appointments() {
 
     const { isMobile } = useResponsive();
+
+    const jwt = useUserStore(state => state.jwt);
+
+    const role = jwt?.role || JWTRoleEnum.USER;
+
+    const { data } = useGetAppointments(role);
 
     return (
         <section
@@ -54,7 +26,7 @@ export function Appointments() {
                     order={isMobile ? 3 : 2}
                     fw={600}
                 >
-                    Upcoming Appointments
+                    Appointments
                 </Title>
                 <Text
                     c={"gray.7"}
@@ -76,6 +48,16 @@ export function Appointments() {
                     ))
                 }
             </div>
+
+            {data?.length === 0 && (
+                <Text
+                    c={"gray.6"}
+                    fz={isMobile ? "sm" : "md"}
+                    className="text-center"
+                >
+                    No upcoming appointments found.
+                </Text>
+            )}
         </section>
     )
 }
