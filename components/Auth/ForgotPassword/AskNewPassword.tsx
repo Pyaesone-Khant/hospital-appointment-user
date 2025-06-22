@@ -1,28 +1,26 @@
-import { Button, PasswordInput, Text, Title } from "@mantine/core";
+import { useResetPassword } from "@/hooks/query-hooks/useAuth";
+import { Button, PasswordInput, Text, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 export function AskNewPassword() {
 
     const form = useForm({
         initialValues: {
+            token: '',
             newPassword: '',
             confirmedPassword: '',
         },
         validate: {
+            token: (value) => value?.length !== 6 ? "Invalid verification code!" : null,
             newPassword: (value) => (value.length < 8 ? 'Password must be at least 8 characters long!' : null),
             confirmedPassword: (value, values) => (value !== values.newPassword ? 'Passwords do not match!' : null),
         },
     })
 
+    const { mutate, isLoading } = useResetPassword();
+
     const handleSubmit = (values: typeof form.values) => {
-        console.log("New password submitted:", values);
-        // Here you would typically send the new password to your backend for processing
-        // For example:
-        // api.updatePassword(values.newPassword).then(response => {
-        //     console.log("Password updated successfully", response);
-        // }).catch(error => {
-        //     console.error("Error updating password", error);
-        // });
+        mutate(values)
     }
 
     return (
@@ -48,6 +46,13 @@ export function AskNewPassword() {
                 onSubmit={form.onSubmit(handleSubmit)}
                 className="space-y-4"
             >
+                <TextInput
+                    type="number"
+                    label="Verification Code"
+                    placeholder="Verification code"
+                    {...form.getInputProps('token')}
+                />
+
                 <PasswordInput
                     label="New Password"
                     placeholder="Enter your new password"
@@ -64,6 +69,7 @@ export function AskNewPassword() {
                     type="submit"
                     fullWidth
                     mt={40}
+                    loading={isLoading}
                 >
                     Confirm
                 </Button>

@@ -1,3 +1,4 @@
+import { useRequestPasswordReset } from "@/hooks/query-hooks/useAuth";
 import { Button, Text, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
@@ -16,9 +17,14 @@ export function AskEmail({
         },
     });
 
+    const { mutate, isLoading } = useRequestPasswordReset();
+
     const handleSubmit = (values: typeof form.values) => {
-        console.log(values);
-        handleNextStep();
+        mutate(values, {
+            onSuccess: () => {
+                handleNextStep();
+            }
+        })
     }
 
     return (
@@ -53,6 +59,7 @@ export function AskEmail({
                     type="submit"
                     fullWidth
                     mt={40}
+                    loading={isLoading}
                 >
                     Continue
                 </Button>

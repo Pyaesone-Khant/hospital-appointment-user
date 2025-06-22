@@ -3,15 +3,15 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 export const createApi = (apiInstance: AxiosInstance) => {
     return _thenData({
         // auth
-        signup: (data: SignupRequest) => apiInstance.post('/auth/signup', data),
+        signup: (data: SignupRequest): Promise<User> => apiInstance.post('/auth/signup', data),
 
         login: (data: LoginRequest): Promise<JWT> => apiInstance.post('/auth/login', data),
 
-        changePassword: (data: ChangePasswordRequest) => apiInstance.post('/auth/change-password', data),
+        changePassword: (data: ChangePasswordRequest): Promise<object> => apiInstance.put('/auth/change-password', data),
 
         requestPasswordReset: (data: RequestResetPasswordRequest) => apiInstance.post('/auth/request-reset-password', data),
 
-        resetPassword: (data: ResetPasswordRequest) => apiInstance.post('/auth/reset-password', data),
+        resetPassword: (data: ResetPasswordRequest) => apiInstance.put('/auth/reset-password', data),
 
         // admin
         createStaff: (data: CreateStaffRequest) => apiInstance.post('/admin/createStaff', data),

@@ -1,9 +1,18 @@
 "use client";
 
+import { useChangePassword } from "@/hooks/query-hooks/useAuth";
+import { getJwtToken } from "@/services/getJwtToken";
+import { useUserStore } from "@/states/zustand/user";
 import { Button, PasswordInput, Text, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
-export function ChangePasswordForm() {
+export function ChangePasswordForm({
+    onModalClose,
+    showTitle = true
+}: {
+    onModalClose?: () => void;
+    showTitle?: boolean;
+}) {
 
     const form = useForm({
         mode: "uncontrolled",
@@ -24,29 +33,42 @@ export function ChangePasswordForm() {
         },
     });
 
+    const { mutate, isLoading } = useChangePassword();
+
     const handleSubmit = (values: typeof form.values) => {
-        console.log("Change Password submitted with values:", values);
-        // Here you would typically call an API to change the password
-        // For now, we just log the values
+        mutate(values, {
+            onSuccess: () => {
+                form.reset();
+                if (onModalClose) {
+                    onModalClose();
+                }
+                useUserStore.getState().clearJwt();
+                getJwtToken().removeJwtToken();
+            },  
+        })
     }
 
     return (
         <div>
-            <article
-                className="text-center mb-8"
-            >
-                <Title
-                    order={2}
-                    mb={4}
-                >
-                    Change Password
-                </Title>
-                <Text
-                    c={"gray.6"}
-                >
-                    Update your password to keep your account secure.
-                </Text>
-            </article>
+            {
+                showTitle && (
+                    <article
+                        className="text-center mb-8"
+                    >
+                        <Title
+                            order={2}
+                            mb={4}
+                        >
+                            Change Password
+                        </Title>
+                        <Text
+                            c={"gray.6"}
+                        >
+                            Update your password to keep your account secure.
+                        </Text>
+                    </article>
+                )
+            }
             <form
                 onSubmit={form.onSubmit(handleSubmit)}
                 className="space-y-4"
@@ -73,6 +95,7 @@ export function ChangePasswordForm() {
                     type="submit"
                     fullWidth
                     variant="filled"
+                    loading={isLoading}
                 >
                     Confirm
                 </Button>

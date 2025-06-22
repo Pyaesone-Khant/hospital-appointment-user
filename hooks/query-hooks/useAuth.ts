@@ -1,36 +1,37 @@
-import { JWTRoleEnum } from "@/constants";
 import { useForgotPasswordContext } from "@/contexts/forgot-password.context";
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
-import { CLIENT_API } from "@/services/axios-client";
+import { setApiToken } from "@/services/api";
+import { axiosClient, CLIENT_API } from "@/services/axios-client";
 import { getJwtToken } from "@/services/getJwtToken";
 import { useUserStore } from "@/states/zustand/user";
 import { notifications } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 export const useLogin = () => {
-
-    const router = useRouter();
-
     const { mutate, isPending: isLoading, ...rest } = useMutation({
         mutationKey: ["login"],
         mutationFn: (data: LoginRequest) => CLIENT_API.login(data),
         onSuccess: (data) => {
             useUserStore.getState().setJwt(data);
             getJwtToken().setJwtToken(data);
-
-            const { role } = data;
-
-            if (role === JWTRoleEnum.ADMIN || role === JWTRoleEnum.STAFF) {
-                router.replace("/admin");
-            } else {
-                router.replace("/");
-            }
+            setApiToken({
+                apiInstance: axiosClient,
+                token: data?.accessToken
+            });
             notifications.show({
                 title: "Login Successful",
                 message: `Welcome back!`,
                 color: "green",
+                autoClose: 3000,
+                withCloseButton: true,
+            });
+        },
+        onError: (error: string) => {
+            notifications.show({
+                title: "Login Failed",
+                message: error,
+                color: "red",
                 autoClose: 3000,
                 withCloseButton: true,
             });
@@ -54,7 +55,7 @@ export const useSignUp = () => {
         onSuccess: () => {
             notifications.show({
                 title: "Sign Up Successful",
-                message: `Please check your email to verify your account.`,
+                message: "You can now log in with your credentials.",
                 color: "green",
                 autoClose: 3000,
                 withCloseButton: true,
@@ -83,6 +84,15 @@ export const useChangePassword = () => {
                 autoClose: 3000,
                 withCloseButton: true,
             });
+        },
+        onError: (error: string) => {
+            notifications.show({
+                title: "Change Password Failed",
+                message: error,
+                color: "red",
+                autoClose: 3000,
+                withCloseButton: true,
+            });
         }
     });
 
@@ -102,6 +112,15 @@ export const useRequestPasswordReset = () => {
                 title: "Password Reset Requested",
                 message: `Please check your email for further instructions.`,
                 color: "green",
+                autoClose: 3000,
+                withCloseButton: true,
+            });
+        },
+        onError: (error: string) => {
+            notifications.show({
+                title: "Password Reset Request Failed",
+                message: error,
+                color: "red",
                 autoClose: 3000,
                 withCloseButton: true,
             });
@@ -133,6 +152,15 @@ export const useResetPassword = () => {
             });
             closeForgotPasswordModal();
             openLoginModal();
+        },
+        onError: (error: string) => {
+            notifications.show({
+                title: "Password Reset Failed",
+                message: error,
+                color: "red",
+                autoClose: 3000,
+                withCloseButton: true,
+            });
         }
     });
 

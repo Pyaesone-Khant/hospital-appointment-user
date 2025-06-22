@@ -1,19 +1,15 @@
 import { useForgotPasswordContext } from "@/contexts/forgot-password.context";
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
-import { getJwtToken } from "@/services/getJwtToken";
-import { useUserStore } from "@/states/zustand/user";
+import { useLogin } from "@/hooks/query-hooks/useAuth";
 import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
 
 export function LoginForm() {
 
     const { closeLoginModal } = useLoginContext();
     const { openSignUpModal } = useSignUpContext();
     const { openForgotPasswordModal } = useForgotPasswordContext();
-    const router = useRouter();
 
     const form = useForm({
         mode: "uncontrolled",
@@ -29,27 +25,16 @@ export function LoginForm() {
         },
     })
 
+    const { mutate, isLoading } = useLogin();
+
     const handleSubmit = (values: typeof form.values) => {
         const { email, password } = values;
-        console.log("Login submitted with values:", { email, password });
-        const jwt = {
-            accessToken: "mockAccess",
-            type: "Bearer",
-            expiredAt: new Date(Date.now() + 3600 * 1000).toISOString(), // 1 hour from now
-            role: "ROLE_ADMIN", // Mock role, adjust as needed
-        } as JWT;
 
-        // Simulate successful login
-        useUserStore.getState().setJwt(jwt);
-        getJwtToken().setJwtToken(jwt);
-        notifications.show({
-            title: "Login Successful",
-            message: `Welcome back!`,
-            color: "green",
-            autoClose: 3000,
-            withCloseButton: true,
-        });
-        router.replace("/");
+        mutate({ email, password }, {
+            onSuccess: () => {
+                closeLoginModal();
+            }
+        })
     }
 
     return (
@@ -92,6 +77,7 @@ export function LoginForm() {
                     size="md"
                     color="dark"
                     className="!bg-dark !text-white !hover:bg-dark/90 !border-none !shadow-md"
+                    loading={isLoading}
                 >
                     Login
                 </Button>
