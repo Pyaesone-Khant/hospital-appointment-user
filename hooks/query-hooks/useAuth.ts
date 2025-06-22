@@ -4,6 +4,7 @@ import { useSignUpContext } from "@/contexts/signup.context";
 import { setApiToken } from "@/services/api";
 import { axiosClient, CLIENT_API } from "@/services/axios-client";
 import { getJwtToken } from "@/services/getJwtToken";
+import { getUserData } from "@/services/getUserData";
 import { useUserStore } from "@/states/zustand/user";
 import { notifications } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
@@ -12,13 +13,20 @@ export const useLogin = () => {
     const { mutate, isPending: isLoading, ...rest } = useMutation({
         mutationKey: ["login"],
         mutationFn: (data: LoginRequest) => CLIENT_API.login(data),
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             useUserStore.getState().setJwt(data);
             getJwtToken().setJwtToken(data);
             setApiToken({
                 apiInstance: axiosClient,
                 token: data?.accessToken
             });
+
+            await CLIENT_API.getCurrentUser(data?.accessToken).then((data) => {
+                console.log(data)
+                getUserData().setUser(data);
+                useUserStore.getState().setUser(data);
+            });
+
             notifications.show({
                 title: "Login Successful",
                 message: `Welcome back!`,

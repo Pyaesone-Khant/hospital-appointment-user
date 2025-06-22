@@ -40,6 +40,10 @@ export const createApi = (apiInstance: AxiosInstance) => {
 
         getAllUsers: (): Promise<User[]> => apiInstance.get('/admin/getAllUsers'),
 
+        getCurrentUser: (accessToken?: string): Promise<User> => apiInstance.get('/admin/getMyProfile', {
+            headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {}
+        }),
+
         // patient
         bookAppointment: (data: BookAppointmentRequest): Promise<{ success: boolean, message: string }> => apiInstance.post('/users/bookAppointment', data),
 
