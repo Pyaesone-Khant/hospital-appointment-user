@@ -2,7 +2,6 @@
 
 import { useResponsive } from "@/hooks";
 import { Card, Divider, Group, Text, Title } from "@mantine/core";
-import dayjs from "dayjs";
 import { DynamicIcon, IconName } from "lucide-react/dynamic";
 import { DashboardTabContents } from "./DashboardTabContents";
 
@@ -24,9 +23,9 @@ const StatisticsData: StatisticsDataType[] = [
         icon: "file-text",
     },
     {
-        title: "Last Checkup",
-        value: dayjs().subtract(1, "month").format("MMM DD, YYYY"),
-        icon: "clock",
+        title: "Total Payments",
+        value: 5,
+        icon: "credit-card",
     },
 ]
 
@@ -36,7 +35,7 @@ export function Dashboard() {
 
     return (
         <section
-            className="space-y-6"
+            className="space-y-8"
         >
             <article
                 className="space-y-2"
@@ -55,7 +54,7 @@ export function Dashboard() {
             </article>
 
             <div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
             >
                 {
                     StatisticsData.map((stat, index) => (
