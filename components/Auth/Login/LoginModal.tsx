@@ -25,7 +25,7 @@ export function LoginModal() {
                         Welcome Back
                     </Title>
                     <Text
-                        c={"gray.7"}
+                        c={"gray.6"}
                     >
                         Login to your account to book appointments and view medical records.
                     </Text>

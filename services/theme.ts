@@ -1,4 +1,4 @@
-import { AvatarProps, ButtonProps, createTheme, MantineThemeOverride, PasswordInputProps, TextInputProps } from "@mantine/core";
+import { AvatarProps, ButtonProps, createTheme, MantineThemeOverride, PasswordInputProps, SelectProps, TextInputProps } from "@mantine/core";
 
 const defaultProps = {
     size: "md",
@@ -33,6 +33,12 @@ export const theme: MantineThemeOverride = createTheme({
             defaultProps: {
                 bg: "linear-gradient(135deg, #999, #333)",
             } as AvatarProps,
+        },
+        Select: {
+            defaultProps: {
+                ...defaultProps,
+                variant: "filled",
+            } as SelectProps,
         }
     }
 }

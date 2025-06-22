@@ -1,16 +1,15 @@
+import { useForgotPasswordContext } from "@/contexts/forgot-password.context";
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
-import { useUserStore } from "@/states/zustand/user";
+import { useLogin } from "@/hooks/query-hooks/useAuth";
 import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
-import { useRouter } from "next/navigation";
 
 export function LoginForm() {
 
     const { closeLoginModal } = useLoginContext();
     const { openSignUpModal } = useSignUpContext();
-    const router = useRouter();
+    const { openForgotPasswordModal } = useForgotPasswordContext();
 
     const form = useForm({
         mode: "uncontrolled",
@@ -26,27 +25,16 @@ export function LoginForm() {
         },
     })
 
+    const { mutate, isLoading } = useLogin();
+
     const handleSubmit = (values: typeof form.values) => {
         const { email, password } = values;
-        console.log("Login submitted with values:", { email, password });
-        const dummyUser = {
-            id: 1,
-            name: "John Doe",
-            email: email,
-            role: "patient",
-        } as User;
 
-        // Simulate successful login
-        useUserStore.getState().setUser(dummyUser);
-        useUserStore.getState().setIsAuthenticated(true);
-        notifications.show({
-            title: "Login Successful",
-            message: `Welcome back, ${dummyUser.name}!`,
-            color: "green",
-            autoClose: 3000,
-            withCloseButton: true,
-        });
-        router.replace("/")
+        mutate({ email, password }, {
+            onSuccess: () => {
+                closeLoginModal();
+            }
+        })
     }
 
     return (
@@ -68,11 +56,28 @@ export function LoginForm() {
                 />
 
                 <Button
+                    type="button"
+                    color="blue"
+                    variant="transparent"
+                    onClick={() => {
+                        closeLoginModal();
+                        openForgotPasswordModal();
+                    }}
+                    size="sm"
+                    px={0}
+                    ml={"auto"}
+                    display={"flex"}
+                >
+                    Forgot Password?
+                </Button>
+
+                <Button
                     type="submit"
                     fullWidth
                     size="md"
                     color="dark"
                     className="!bg-dark !text-white !hover:bg-dark/90 !border-none !shadow-md"
+                    loading={isLoading}
                 >
                     Login
                 </Button>
@@ -91,6 +96,7 @@ export function LoginForm() {
                         closeLoginModal();
                         openSignUpModal();
                     }}
+                    color="blue"
                 >
                     Sign Up
                 </Button>

@@ -1,53 +1,21 @@
 "use client";
 
+import { JWTRoleEnum } from "@/constants";
 import { useResponsive } from "@/hooks";
+import { useGetAppointments } from "@/hooks/query-hooks/useAppointment";
+import { useUserStore } from "@/states/zustand/user";
 import { Text, Title } from "@mantine/core";
 import { Appointment } from "./Appointment";
 
-const data: Appointment[] = [
-    {
-        id: 1,
-        date: '2023-10-01',
-        time: '10:00 AM',
-        doctor: {
-            id: 1,
-            name: 'Dr. Smith',
-            specialty: {
-                id: 1,
-                name: 'Cardiology',
-                description: 'Heart and blood vessel specialist'
-            },
-            availableSlots: ['10:00 AM', '11:00 AM'],
-            experience: 10,
-            rating: 4.5,
-            availability: 'Monday to Friday'
-        },
-        status: 'Confirmed'
-    },
-    {
-        id: 2,
-        date: '2023-10-02',
-        time: '11:00 AM',
-        doctor: {
-            id: 2,
-            name: 'Dr. Johnson',
-            specialty: {
-                id: 2,
-                name: 'Dermatology',
-                description: 'Skin specialist'
-            },
-            availableSlots: ['11:00 AM', '12:00 PM'],
-            experience: 8,
-            rating: 4.0,
-            availability: 'Monday to Saturday'
-        },
-        status: 'Pending'
-    }
-]
-
-export function AppointmentList() {
+export function Appointments() {
 
     const { isMobile } = useResponsive();
+
+    const jwt = useUserStore(state => state.jwt);
+
+    const role = jwt?.role || JWTRoleEnum.USER;
+
+    const { data } = useGetAppointments(role);
 
     return (
         <section
@@ -58,7 +26,7 @@ export function AppointmentList() {
                     order={isMobile ? 3 : 2}
                     fw={600}
                 >
-                    Upcoming Appointments
+                    Appointments
                 </Title>
                 <Text
                     c={"gray.7"}
@@ -80,6 +48,16 @@ export function AppointmentList() {
                     ))
                 }
             </div>
+
+            {data?.length === 0 && (
+                <Text
+                    c={"gray.6"}
+                    fz={isMobile ? "sm" : "md"}
+                    className="text-center"
+                >
+                    No upcoming appointments found.
+                </Text>
+            )}
         </section>
     )
 }

@@ -1,2 +1,2 @@
-export * from "./AppointmentList";
-
+export * from "./Appointments";
+export * from "./BookAppointment";

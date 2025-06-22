@@ -1,7 +1,7 @@
 "use client";
 
 import { useResponsive } from "@/hooks";
-import { Badge, Button, Card, Group, Stack, Text, Title } from "@mantine/core";
+import { Card, Group, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 
 export function MedicalRecord({
@@ -10,8 +10,7 @@ export function MedicalRecord({
     record: MedicalRecord
 }) {
 
-    const { doctor, title, diagnosis, prescription, date, note, status } = record;
-    const { name, specialty } = doctor;
+    const { doctorName, diagnosis, patientName, createdDate } = record;
 
     const { isMobile } = useResponsive();
 
@@ -27,74 +26,39 @@ export function MedicalRecord({
             <article
                 className="space-y-1"
             >
-                <Group
-                    justify="space-between"
-                    align="center"
+                <Title
+                    order={isMobile ? 5 : 4}
+                    fw={600}
                 >
-                    <Title
-                        order={isMobile ? 5 : 4}
-                        fw={600}
-                    >
-                        {title}
-                    </Title>
-                    <Badge
-                        variant="outline"
-                        color={status === "Active" ? "green" : "red"}
-                        fw={500}
-                    >
-                        {status}
-                    </Badge>
-                </Group>
-                <Group
-                    justify="space-between"
-                    align="center"
-                >
-                    <Text
-                        fz={isMobile ? "sm" : "md"}
-                    >
-                        {specialty.name}
-                    </Text>
-                    <Text
-                        fz={isMobile ? "sm" : "md"}
-                    >
-                        {dayjs(date).format("MMM DD, YYYY")}
-                    </Text>
-                </Group>
+                    {patientName}&apos;s Medical Record
+                </Title>
             </article>
 
             <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                className="space-y-4"
             >
                 <DataGrid
                     title="Doctor"
-                    data={name}
+                    data={doctorName}
                 />
                 <DataGrid
                     title="Diagnosis"
                     data={diagnosis}
                 />
                 <DataGrid
-                    title="Prescription"
-                    data={prescription}
-                    className="md:col-span-2"
+                    title="Date"
+                    data={dayjs(createdDate).format("MMM DD, YYYY")}
                 />
-                {note && (
-                    <DataGrid
-                        title="Note"
-                        data={note}
-                        className="md:col-span-2"
-                    />
-                )}
             </div>
 
-            <Button
+            {/* <Button
                 variant="light"
                 color="blue"
                 fullWidth
                 size={isMobile ? "sm" : "md"}
             >
                 View Details
-            </Button>
+            </Button> */}
         </Card>
     )
 }
@@ -112,9 +76,9 @@ const DataGrid = ({
     const { isMobile } = useResponsive();
 
     return (
-        <Stack
+        <Group
             className={className}
-            gap={0}
+            justify="space-between"
         >
             <Text
                 fz={isMobile ? "sm" : "md"}
@@ -128,6 +92,6 @@ const DataGrid = ({
             >
                 {data}
             </Text>
-        </Stack>
+        </Group>
     )
 }

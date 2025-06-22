@@ -1,9 +1,12 @@
 "use client";
 
+import { JWTRoleEnum } from "@/constants";
 import { useResponsive } from "@/hooks";
-import { Badge, Card, Group, Text, Title } from "@mantine/core";
+import { useUserStore } from "@/states/zustand/user";
+import { Badge, Card, Group, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { Calendar, Clock } from "lucide-react";
+import { CancelAppointmentModal } from "./CancelAppointmentModal";
 
 export function Appointment({
     appointment
@@ -13,50 +16,46 @@ export function Appointment({
 
     const { isMobile } = useResponsive();
 
+    const jwt = useUserStore(state => state.jwt);
+    const isUser = jwt?.role === JWTRoleEnum.USER;
+
     return (
         <Card
             shadow="sm"
             padding="md"
             radius="md"
             withBorder
+            className="space-y-4"
         >
             <Group
                 justify="space-between"
                 align="center"
                 mb="xs"
             >
-                <Title
-                    order={isMobile ? 5 : 4}
+
+                <Text
+                    fw={500}
+                    fz={isMobile ? "md" : "lg"}
+                    className="truncate"
                 >
-                    {appointment.doctor.name}
-                </Title>
+                    {isUser ? `Dr. ${appointment.doctorName}` : `Patient: ${appointment.patientName}`}
+                </Text>
+
                 <Badge
                     color={
-                        appointment.status === "Confirmed"
+                        appointment.confirmed
                             ? "green"
-                            : appointment.status === "Pending"
-                                ? "yellow"
-                                : "red"
+                            : appointment.cancelled
+                                ? "red"
+                                : "yellow"
                     }
-                    variant={
-                        appointment.status === "Confirmed"
-                            ? "filled"
-                            : appointment.status === "Pending"
-                                ? "outline"
-                                : "light"
-                    }
+                    variant={"filled"}
                     size="md"
                     fw={500}
                 >
-                    {appointment.status}
+                    {appointment.confirmed ? "Confirmed" : appointment.cancelled ? "Cancelled" : "Pending"}
                 </Badge>
             </Group>
-            <Text
-                mb={"xs"}
-                fz={isMobile ? "sm" : "md"}
-            >
-                {appointment.doctor.specialty.name}
-            </Text>
 
             <Group
                 gap={20}
@@ -71,7 +70,7 @@ export function Appointment({
                         fw={500}
                         fz={isMobile ? "sm" : "md"}
                     >
-                        {dayjs(appointment.date).format("MMM D, YYYY")}
+                        {dayjs(appointment.dateTime).format("MMM D, YYYY")}
                     </Text>
                 </Group>
                 <Group
@@ -84,10 +83,18 @@ export function Appointment({
                         fw={500}
                         fz={isMobile ? "sm" : "md"}
                     >
-                        {appointment.time}
+                        {dayjs(appointment.dateTime).format("h:mm A")}
                     </Text>
                 </Group>
             </Group>
+
+            {
+                isUser && (
+                    <CancelAppointmentModal
+                        appointment={appointment}
+                    />
+                )
+            }
         </Card>
     )
 }

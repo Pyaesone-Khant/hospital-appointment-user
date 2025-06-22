@@ -1,2 +1,3 @@
-export * from "./MedicalRecordList";
+export * from "./AddMedicalRecord";
+export * from "./MedicalRecords";
 

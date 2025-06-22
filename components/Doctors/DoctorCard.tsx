@@ -1,14 +1,18 @@
 "use client";
 
 import { useLoginContext } from "@/contexts/login.context";
-import { Avatar, Badge, Button, Card, Stack, Text } from "@mantine/core";
-import { Calendar, Star } from "lucide-react";
+import { Avatar, Badge, Button, Card, Flex, Group, Stack, Text } from "@mantine/core";
+import { Building, Calendar, Mail, Phone } from "lucide-react";
+import { StatusBadge } from "../common";
 
 export function DoctorCard({
     doctor
 }: {
     doctor: Doctor;
 }) {
+
+
+    const { department, fullName, specialization, email, phone, active } = doctor;
 
     const { openLoginModal } = useLoginContext();
 
@@ -21,7 +25,7 @@ export function DoctorCard({
             <Stack
                 justify="center"
                 align="center"
-                gap={4}
+                gap={8}
             >
                 <Avatar
                     size="xl"
@@ -31,30 +35,97 @@ export function DoctorCard({
                     size="lg"
                     fw={600}
                 >
-                    {doctor.name}</Text>
+                    {fullName}
+                </Text>
                 <Badge
                     variant="outline"
                     bg={"gray.3"}
                 >
-                    {doctor.specialty.name}
+                    {specialization}
                 </Badge>
             </Stack>
             <Stack>
-                <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Experience:</span>
-                    <span className="font-medium">{doctor.experience}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Rating:</span>
-                    <div className="flex items-center">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                        <span className="font-medium">{doctor.rating}</span>
-                    </div>
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    <span>{doctor.availability}</span>
-                </div>
+                <Flex
+                    justify={"space-between"}
+                >
+                    <Group
+                        gap={12}
+                    >
+                        <Building className="w-4 h-4" />
+                        <Text
+                            fw={500}
+                            fz={"sm"}
+                        >
+                            Department
+                        </Text>
+                    </Group>
+                    <Text
+                        fz={"sm"}
+                    >
+                        {department}
+                    </Text>
+                </Flex>
+                <Flex
+                    justify={"space-between"}
+                >
+                    <Group
+                        gap={12}
+                    >
+                        <Mail className="w-4 h-4" />
+                        <Text
+                            fw={500}
+                            fz={"sm"}
+                        >
+                            Email
+                        </Text>
+                    </Group>
+                    <Text
+                        fz={"sm"}
+                    >
+                        {email}
+                    </Text>
+                </Flex>
+                <Flex
+                    justify={"space-between"}
+                >
+                    <Group
+                        gap={12}
+                    >
+                        <Phone className="w-4 h-4" />
+                        <Text
+                            fw={500}
+                            fz={"sm"}
+                        >
+                            Phone
+                        </Text>
+                    </Group>
+                    <Text
+                        fz={"sm"}
+                    >
+                        {phone || "Not Provided"}
+                    </Text>
+                </Flex>
+                <Flex
+                    justify={"space-between"}
+                >
+                    <Group
+                        gap={12}
+                    >
+                        <Calendar className="w-4 h-4" />
+                        <Text
+                            fw={500}
+                            fz={"sm"}
+                        >
+                            Available Status
+                        </Text>
+                    </Group>
+
+                    <StatusBadge
+                        color={active ? "green" : "red"}
+                    >
+                        {active ? "Available" : "Unavailable"}
+                    </StatusBadge>
+                </Flex>
                 <Button
                     onClick={openLoginModal}
                     fullWidth
