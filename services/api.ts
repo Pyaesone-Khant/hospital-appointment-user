@@ -14,68 +14,75 @@ export const createApi = (apiInstance: AxiosInstance) => {
         resetPassword: (data: ResetPasswordRequest) => apiInstance.put('/auth/reset-password', data),
 
         // admin
-        createStaff: (data: CreateStaffRequest) => apiInstance.post('/admin/createStaff', data),
+        createStaff: (data: CreateStaffRequest): Promise<{ success: boolean, message: string }> => apiInstance.post('/admin/createStaff', data),
 
-        updateStaff: (employee: number, data: CreateStaffRequest) => apiInstance.put(`/admin/updateStaff/${employee}`, data),
+        updateStaff: (employee: number, data: CreateStaffRequest): Promise<{ success: boolean, message: string }> => apiInstance.put(`/admin/updateStaff/${employee}`, data),
 
         deleteStaff: (staffId: number) => apiInstance.delete(`/admin/removeStaff/${staffId}`),
 
-        getAllDoctors: () => apiInstance.get('/admin/doctors'),
+        getAllDoctors: (): Promise<Doctor[]> => apiInstance.get('/admin/doctors'),
 
-        getAllStaffs: () => apiInstance.get('/admin/staffs'),
+        getAllStaffs: (): Promise<Staff[]> => apiInstance.get('/admin/staffs'),
 
-        getAllNurses: () => apiInstance.get('/admin/nurses'),
+        getAllNurses: (): Promise<Nurse[]> => apiInstance.get('/admin/nurses'),
 
-        getAllPatients: () => apiInstance.get('/admin/patients'),
+        getAllPatients: (): Promise<User[]> => apiInstance.get('/admin/patients'),
 
         assignNurse: (doctorId: number, data: AssignNurseRequest) => apiInstance.put(`/admin/assignedNurse/${doctorId}`, data),
 
         assignDoctorShift: (data: AssignDoctorShiftRequest) => apiInstance.post('/admin/addSchedule', data),
 
+        getAllDoctorShifts: (): Promise<DoctorShift[]> => apiInstance.get(`/admin/allDoctorSchedules`),
+
         getAllDepartments: (): Promise<Department[]> => apiInstance.get('/admin/allDepartments'),
 
         addDepartment: (data: CreateDepartmentRequest) => apiInstance.post('/admin/addDepartment', data),
 
+        getAllUsers: (): Promise<User[]> => apiInstance.get('/admin/getAllUsers'),
 
         // patient
-        bookAppointment: (data: BookAppointmentRequest) => apiInstance.post('/users/bookAppointment', data),
+        bookAppointment: (data: BookAppointmentRequest): Promise<{ success: boolean, message: string }> => apiInstance.post('/users/bookAppointment', data),
 
         makePayment: (data: MakePaymentRequest) => apiInstance.post('/users/confirm', data),
 
-        getDoctorsWithSpecialization: (specialization: string) => apiInstance.get(`/users/getDoctorWithSpecialization`, {
+        getDoctorsWithSpecialization: (specialization: string): Promise<Doctor[]> => apiInstance.get(`/users/getDoctorWithSpecialization`, {
             params: { specialization }
         }),
 
-        getUserPaymentHistory: () => apiInstance.get('/users/my-payments'),
+        getUserPaymentHistory: (): Promise<Payment[]> => apiInstance.get('/users/my-payments'),
 
-        getUserMedicalRecordHistory: () => apiInstance.get('/users/viewMedicalRecord'),
+        getUserMedicalRecordHistory: (): Promise<MedicalRecord[]> => apiInstance.get('/users/viewMedicalRecord'),
 
-        getUserAppointments: () => apiInstance.get('/users/viewAppointment'),
+        getUserAppointments: (): Promise<Appointment[]> => apiInstance.get('/users/viewAppointment'),
 
-        cancelAppointment: (appointmentId: number) => apiInstance.put(`/users/appointments/cancel/${appointmentId}`),
+        cancelAppointment: (appointmentId: number): Promise<{ success: boolean, message: string }> => apiInstance.put(`/users/appointments/cancel/${appointmentId}`),
+
+        getAvailableDoctors: (): Promise<DoctorShift[]> => apiInstance.get('/users/getAllDoctorSchedules'),
 
         // doctor
         getDoctorInfo: () => apiInstance.get('/doctors/getDoctorInfo'),
 
-        getAssignedShifts: () => apiInstance.get('/doctors/getDoctorSchedule'),
+        getAssignedShifts: (): Promise<DoctorShift[]> => apiInstance.get('/doctors/getDoctorSchedule'),
 
-        getDoctorAppointments: () => apiInstance.get('/doctors/viewAppointment'),
+        getDoctorAppointments: (): Promise<Appointment[]> => apiInstance.get('/doctors/viewAppointment'),
 
         addMedicalRecord: (data: AddMedicalRecordRequest) => apiInstance.post('/doctors/addMedicalRecord', data),
 
-        getMedicalRecords: () => apiInstance.get(`/doctors/viewMedicalRecord`),
+        getMedicalRecords: (): Promise<MedicalRecord[]> => apiInstance.get(`/doctors/viewMedicalRecord`),
+
+        getDoctorPatients: (): Promise<User[]> => apiInstance.get('/doctors/patients'),
 
         // nurse
-        getNurseShifts: () => apiInstance.get('/nurses/getNurseSchedules'),
+        getNurseShifts: (): Promise<NurseShift[]> => apiInstance.get('/nurses/getNurseSchedules'),
 
-        getNurseMedicalRecords: () => apiInstance.get('/nurses/viewMedicalRecord'),
+        getNurseMedicalRecords: (): Promise<MedicalRecord[]> => apiInstance.get('/nurses/viewMedicalRecord'),
 
         // staff
-        getAllAppointments: () => apiInstance.get('/staffs/viewAppointment'),
+        getAllAppointments: (): Promise<Appointment[]> => apiInstance.get('/staffs/viewAllAppointments'),
 
         updateAppointmentStatus: (appointmentId: number, data: UpdateAppointmentStatusRequest) => apiInstance.put(`/staffs/confirmedAppointment/${appointmentId}`, data),
 
-        getAllMedicalRecords: () => apiInstance.get('/staffs/viewMedicalRecord'),
+        getAllMedicalRecords: (): Promise<MedicalRecord[]> => apiInstance.get('/staffs/viewMedicalRecord'),
 
         createFee: (data: CreateFeeRequest) => apiInstance.post("/staffs/fees", data),
 
@@ -85,13 +92,7 @@ export const createApi = (apiInstance: AxiosInstance) => {
 
         deleteFee: (feeId: number) => apiInstance.delete(`/staffs/fees/${feeId}`),
 
-        createDepartment: (data: CreateDepartmentRequest) => apiInstance.post("/staffs/departments", data),
-
-        getAllPayments: () => apiInstance.get('/staffs/payments'),
-
-        getAllDepartments: () => apiInstance.get('/staffs/departments'),
-
-        addDepartment: (data: CreateDepartmentRequest) => apiInstance.post('/staffs/addDepartment', data),
+        getAllPayments: (): Promise<Payment[]> => apiInstance.get('/staffs/payments'),
     })
 }
 

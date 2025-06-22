@@ -1,26 +1,13 @@
-import dayjs from "dayjs"
-import { Column, MantineTable } from "../admin/common/MantineTable"
-import { SlideUp } from "../common"
+"use client";
 
-const data: Payment[] = [
-    {
-        "id": 1,
-        "patientName": "Pyae Pyae",
-        "amount": 150,
-        "method": "Credit Card",
-        "paymentDate": "2025-06-13"
-    },
-    {
-        "id": 2,
-        "patientName": "Genos",
-        "amount": 150,
-        "method": "Credit Card",
-        "paymentDate": "2025-06-13"
-    }
-]
-
+import { useGetAllPayments } from "@/hooks/query-hooks/useStaff";
+import dayjs from "dayjs";
+import { Column, MantineTable } from "../admin/common/MantineTable";
+import { SlideUp } from "../common";
 
 export function PaymentList() {
+
+    const { data } = useGetAllPayments();
 
     const columns: Column<Payment>[] = [
         {
@@ -29,25 +16,34 @@ export function PaymentList() {
         },
         {
             header: "Amount",
-            accessor: (payment) => `$ ${payment.amount.toFixed(2)}`,
+            accessor: (payment) => `$ ${payment?.amount.toFixed(2)}`,
             textAlign: 'right'
         },
         {
             header: "Method",
-            accessor: "method",
+            accessor: (payment) => payment?.method ?? "N/A",
         },
         {
             header: "Payment Date",
-            accessor: (payment) => dayjs(payment.paymentDate).format("DD MMM, YYYY"),
+            accessor: (payment) => payment?.paymentDate !== "N/A" ? dayjs(payment.paymentDate).format("DD MMM, YYYY") : "Pending",
             textAlign: 'center'
         }
     ]
 
     return (
-        <SlideUp>
+        <SlideUp
+            className="space-y-6"
+        >
+            <article>
+                <h3
+                    className="text-2xl font-semibold"
+                >
+                    Payments
+                </h3>
+            </article>
             <MantineTable
                 columns={columns}
-                data={data}
+                data={data ?? []}
                 rowKey={(payment) => payment.id.toString()}
             />
         </SlideUp>
