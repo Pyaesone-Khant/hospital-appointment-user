@@ -1,4 +1,4 @@
-import { queryClient } from "@/constants";
+import { JWTRoleEnum, queryClient } from "@/constants";
 import { CLIENT_API } from "@/services/axios-client";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -38,7 +38,6 @@ export const useGetAppointments = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["appointments"],
         queryFn: () => CLIENT_API.getUserAppointments(),
-
     });
 
     return {
@@ -75,6 +74,7 @@ export const useGetUserPaymentHistory = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["paymentHistory"],
         queryFn: () => CLIENT_API.getUserPaymentHistory(),
+        enabled: !JWTRoleEnum.USER, // Only fetch if the user is not a regular user
     });
 
     return {
@@ -88,7 +88,6 @@ export const useGetUserMedicalRecordHistory = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["medicalRecordHistory"],
         queryFn: () => CLIENT_API.getUserMedicalRecordHistory(),
-
     });
 
     return {

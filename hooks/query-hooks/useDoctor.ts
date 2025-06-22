@@ -111,6 +111,8 @@ export const useGetShitSchedule = (role: JWTRoleEnum) => {
                     return CLIENT_API.getAssignedShifts();
                 case JWTRoleEnum.NURSE:
                     return CLIENT_API.getNurseShifts();
+                default:
+                    return [];
             }
         },
     });

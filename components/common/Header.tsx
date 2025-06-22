@@ -13,6 +13,7 @@ export function Header() {
     const { openSignUpModal } = useSignUpContext();
 
     const jwt = useUserStore((state) => state.jwt);
+    const user = useUserStore((state) => state.user);
 
     return (
         <header className="bg-white sticky top-0 z-50 shadow">
@@ -26,9 +27,9 @@ export function Header() {
                     jwt && jwt?.accessToken ? (
                         <Group>
                             <Text
-                                c={"gray.7"}
+                                c={".7"}
                             >
-                                Welcome back!
+                                {user?.name || "User"}
                             </Text>
                             <UserMenu />
                         </Group>

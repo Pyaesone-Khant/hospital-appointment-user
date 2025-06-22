@@ -266,3 +266,17 @@ export const useGetAllUsers = () => {
         ...rest
     };
 }
+
+export const useGetCurrentUser = () => {
+    const { data, isLoading, ...rest } = useQuery({
+        queryKey: ["getCurrentUser"],
+        queryFn: () => CLIENT_API.getCurrentUser(),
+        refetchOnWindowFocus: false,
+    });
+
+    return {
+        data,
+        isLoading,
+        ...rest
+    };
+}
