@@ -2,7 +2,7 @@
 
 import { ForgotPasswordModal, LoginModal, SignupModal } from "@/components/Auth";
 import { Footer, Header } from "@/components/common";
-import { queryClient } from "@/constants";
+import { JWTRoleEnum, queryClient } from "@/constants";
 import { ForgotPasswordContextProvider } from "@/contexts/forgot-password.context";
 import { LoginContextProvider } from "@/contexts/login.context";
 import { SignUpContextProvider } from "@/contexts/signup.context";
@@ -16,11 +16,11 @@ export function OnboardingLayout({
     children: React.ReactNode;
 }) {
 
-    const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+    const jwt = useUserStore((state) => state.jwt);
 
-    if (isAuthenticated()) {
-        return redirect("/");
-    }
+    if (jwt && jwt.accessToken && (jwt.role === JWTRoleEnum.ADMIN || jwt.role === JWTRoleEnum.STAFF)) return redirect("/admin");
+
+    if (jwt && jwt.accessToken && (jwt.role !== JWTRoleEnum.ADMIN && jwt.role !== JWTRoleEnum.STAFF)) return redirect("/");
 
     return (
         <QueryClientProvider
