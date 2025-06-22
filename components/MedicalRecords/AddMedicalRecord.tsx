@@ -1,5 +1,7 @@
 import { useResponsive } from "@/hooks";
-import { Button, MultiSelect, Text, Textarea, TextInput, Title } from "@mantine/core";
+import { useAddMedicalRecord, useGetDoctorPatients } from "@/hooks/query-hooks/useDoctor";
+import { useGetAllFees } from "@/hooks/query-hooks/useStaff";
+import { Button, MultiSelect, Select, Text, Textarea, Title } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
@@ -23,8 +25,17 @@ export function AddMedicalRecord() {
         }
     });
 
+    const { data: patients } = useGetDoctorPatients();
+    const { data: fees } = useGetAllFees();
+
+    const { mutate, isLoading } = useAddMedicalRecord();
+
     const handleSubmit = (values: typeof form.values) => {
-        console.log(values);
+        mutate(values, {
+            onSuccess: () => {
+                form.reset();
+            },
+        })
     };
 
     return (
@@ -36,13 +47,13 @@ export function AddMedicalRecord() {
                     order={isMobile ? 3 : 2}
                     fw={600}
                 >
-                    Upcoming Appointments
+                    Add Medical Record
                 </Title>
                 <Text
                     c={"gray.7"}
                     fz={isMobile ? "sm" : "md"}
                 >
-                    Your upcoming appointments are listed below. You can view details, reschedule, or cancel them as needed.
+                    Fill out the form below to add a new medical record. Ensure all fields are completed accurately.
                 </Text>
             </article>
 
@@ -50,12 +61,19 @@ export function AddMedicalRecord() {
                 onSubmit={form.onSubmit(handleSubmit)}
                 className="space-y-4"
             >
-                <TextInput
+                <Select
                     label="Patient Name"
-                    placeholder="Enter patient's name"
+                    placeholder="Select patient"
+                    data={patients?.map((patient) => ({
+                        value: patient.name,
+                        label: patient.name
+                    })) || []}
+                    variant="filled"
                     size="md"
+                    withAsterisk
                     {...form.getInputProps("patientName")}
                 />
+
                 <DatePickerInput
                     label="Date of Record"
                     placeholder="Select date"
@@ -67,7 +85,10 @@ export function AddMedicalRecord() {
                 <MultiSelect
                     label="Fees"
                     placeholder="Select applicable fees"
-                    data={["Consultation", "Lab Tests", "Medication"]}
+                    data={fees?.map((fee) => ({
+                        value: fee.id.toString(),
+                        label: `${fee.name} - $${fee.amount}`
+                    })) ?? []}
                     variant="filled"
                     size="md"
                     withAsterisk
@@ -85,6 +106,7 @@ export function AddMedicalRecord() {
                     fullWidth
                     size="md"
                     color="blue"
+                    loading={isLoading}
                 >
                     Add Medical Record
                 </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useResponsive } from "@/hooks";
-import { Button, Card, Group, Text, Title } from "@mantine/core";
+import { Card, Group, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 
 export function MedicalRecord({
@@ -51,14 +51,14 @@ export function MedicalRecord({
                 />
             </div>
 
-            <Button
+            {/* <Button
                 variant="light"
                 color="blue"
                 fullWidth
                 size={isMobile ? "sm" : "md"}
             >
                 View Details
-            </Button>
+            </Button> */}
         </Card>
     )
 }

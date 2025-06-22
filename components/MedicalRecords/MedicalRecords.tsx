@@ -1,36 +1,21 @@
 "use client"
 
+import { JWTRoleEnum } from "@/constants";
 import { useResponsive } from "@/hooks";
+import { useGetMedicalRecords } from "@/hooks/query-hooks/useMedicalRecord";
+import { useUserStore } from "@/states/zustand/user";
 import { Text, Title } from "@mantine/core";
 import { MedicalRecord } from "./MedicalRecord";
 
-const data: MedicalRecord[] = [
-    {
-        id: 1,
-        doctorName: "Dr. Smith",
-        diagnosis: "Hypertension",
-        createdDate: "2023-09-30",
-        patientName: "John Doe",
-    },
-    {
-        id: 2,
-        doctorName: "Dr. Johnson",
-        diagnosis: "Eczema",
-        createdDate: "2023-09-29",
-        patientName: "Jane Doe",
-    },
-    {
-        id: 3,
-        doctorName: "Dr. Brown",
-        diagnosis: "Diabetes",
-        createdDate: "2023-09-28",
-        patientName: "Alice Smith",
-    }
-]
-
-export function MedicalRecordList() {
+export function MedicalRecords() {
 
     const { isMobile } = useResponsive();
+
+    const jwt = useUserStore(state => state.jwt)
+
+    const role = jwt?.role || JWTRoleEnum.USER;
+
+    const { data } = useGetMedicalRecords(role)
 
     return (
         <div
@@ -52,15 +37,25 @@ export function MedicalRecordList() {
             </article>
 
             <div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-                {data.map((record) => (
+                {data?.map((record) => (
                     <MedicalRecord
                         key={record.id}
                         record={record}
                     />
                 ))}
             </div>
+
+            {data?.length === 0 && (
+                <Text
+                    c={"gray.6"}
+                    fz={isMobile ? "sm" : "md"}
+                    className="text-center"
+                >
+                    No medical records found.
+                </Text>
+            )}
         </div>
     )
 }

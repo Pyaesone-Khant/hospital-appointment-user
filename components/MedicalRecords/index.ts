@@ -1,3 +1,3 @@
 export * from "./AddMedicalRecord";
-export * from "./MedicalRecordList";
+export * from "./MedicalRecords";
 
