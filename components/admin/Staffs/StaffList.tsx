@@ -1,31 +1,11 @@
 import { SlideUp, StatusBadge } from "@/components/common";
-import { Group } from "@mantine/core";
+import { RoleEnum } from "@/constants";
+import { useGetEmployees } from "@/hooks/query-hooks/useAdmin";
 import { Column, MantineTable } from "../common/MantineTable";
-import { DeleteEmployeeModal } from "../Employees";
-import { UpdateEmployeeModal } from "../Employees/UpdateEmployeeModal";
-
-const data: Staff[] = [
-    {
-        "staffId": 1,
-        "fullName": "Ei Ei",
-        "email": "Singapore",
-        "address": "eiei234@gmail.com",
-        "phone": "84161945",
-        "active": true
-    },
-    {
-        "staffId": 2,
-        "fullName": "John Doe",
-        "email": "Singapore",
-        "address": "eiei234@gmail.com",
-        "phone": "84161945",
-        "active": true
-    }
-]
-
 
 export function StaffList() {
 
+    const { data } = useGetEmployees(RoleEnum.STAFF);
     const columns: Column<Staff>[] = [
         {
             header: "Name",
@@ -51,25 +31,12 @@ export function StaffList() {
                 </StatusBadge>
             ),
         },
-        {
-            header: "Actions",
-            accessor: (row) => (
-                <Group>
-                    <UpdateEmployeeModal
-                        employee={row as Staff}
-                    />
-                    <DeleteEmployeeModal
-                        employeeId={row.staffId}
-                    />
-                </Group>
-            ),
-        }
     ];
 
     return (
         <SlideUp>
             <MantineTable
-                data={data}
+                data={data as Staff[]}
                 columns={columns}
                 rowKey={(row) => row.staffId}
             />

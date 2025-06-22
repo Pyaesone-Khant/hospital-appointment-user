@@ -7,11 +7,7 @@ export const useGetAllAppointments = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["allAppointments"],
         queryFn: () => CLIENT_API.getAllAppointments(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
@@ -27,7 +23,7 @@ export const useUpdateAppointmentStatus = () => {
         mutationFn: (payload: { appointmentId: number, data: UpdateAppointmentStatusRequest }) => CLIENT_API.updateAppointmentStatus(payload.appointmentId, payload.data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["allAppointments"]
+                queryKey: ["allAppointments", "appointments"]
             });
             showNotification({
                 title: "Success",
@@ -48,11 +44,7 @@ export const useGetAllMedicalRecords = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["allMedicalRecords"],
         queryFn: () => CLIENT_API.getAllMedicalRecords(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
@@ -79,7 +71,7 @@ export const useCreateFee = () => {
     });
 
     return {
-        createFee: mutate,
+        mutate,
         isLoading,
         ...rest
     };
@@ -102,7 +94,7 @@ export const useUpdateFee = () => {
     });
 
     return {
-        updateFee: mutate,
+        mutate,
         isLoading,
         ...rest
     };
@@ -112,11 +104,6 @@ export const useGetAllFees = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["allFees"],
         queryFn: () => CLIENT_API.getAllFees(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
     return {
@@ -143,30 +130,7 @@ export const useDeleteFee = () => {
     });
 
     return {
-        deleteFee: mutate,
-        isLoading,
-        ...rest
-    };
-}
-
-export const useCreateDepartment = () => {
-    const { mutate, isPending: isLoading, ...rest } = useMutation({
-        mutationKey: ["createDepartment"],
-        mutationFn: (data: CreateDepartmentRequest) => CLIENT_API.createDepartment(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["allDepartments"]
-            });
-            showNotification({
-                title: "Success",
-                message: "Department created successfully",
-                color: "green"
-            });
-        }
-    });
-
-    return {
-        createDepartment: mutate,
+        mutate,
         isLoading,
         ...rest
     };
@@ -176,9 +140,6 @@ export const useGetAllPayments = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["allPayments"],
         queryFn: () => CLIENT_API.getAllPayments(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
         retry: 1,
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
