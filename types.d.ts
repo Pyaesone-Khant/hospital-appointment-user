@@ -1,11 +1,10 @@
 interface Appointment {
-    id: number,
-    patientName: string,
-    doctorName: string,
-    dateTime: string,
-    confirmed: boolean,
-    cancelled: boolean
-
+    id: number;
+    patientName: string;
+    doctorName: string;
+    dateTime: string;
+    confirmed: boolean;
+    cancelled: boolean;
 }
 
 interface Specialty {

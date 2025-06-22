@@ -1,18 +1,32 @@
 "use client";
 
-import { ActionIcon, Button, Flex, Modal, Text } from "@mantine/core";
+import { useUpdateAppointmentStatus } from "@/hooks/query-hooks/useStaff";
+import { ActionIcon, ActionIconProps, Button, Flex, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { X } from "lucide-react";
 
-export function CancelAppointmentModal(props: Appointment) {
+type CancelAppointmentModalProps = {
+    appointment: Appointment;
+    buttonProps?: Omit<ActionIconProps, 'onClick'>;
+    modalProps?: Omit<React.ComponentProps<typeof Modal>, 'opened' | 'onClose'>;
+}
 
-    const { id } = props;
+export function CancelAppointmentModal({
+    appointment: { id },
+    buttonProps,
+    modalProps,
+}: CancelAppointmentModalProps) {
+
     const [opened, { toggle }] = useDisclosure(false);
 
+    const { mutate, isLoading } = useUpdateAppointmentStatus();
+
     const handleCancel = () => {
-        // Logic to cancel the appointment goes here
-        console.log("Appointment cancelled");
-        toggle(); // Close the modal after cancellation
+        mutate({ appointmentId: id, data: { confirmed: false } }, {
+            onSuccess: () => {
+                toggle();
+            }
+        })
     }
 
     return (
@@ -24,6 +38,7 @@ export function CancelAppointmentModal(props: Appointment) {
                 onClick={toggle}
                 title="Cancel Appointment"
                 aria-label="Cancel Appointment"
+                {...buttonProps}
             >
                 <X />
             </ActionIcon>
@@ -35,6 +50,9 @@ export function CancelAppointmentModal(props: Appointment) {
                 classNames={{
                     title: "!text-[var(--mantine-color-red-7)] !text-lg !font-semibold",
                 }}
+                {...modalProps}
+                closeOnClickOutside={!isLoading}
+                closeOnEscape={!isLoading}
             >
                 <article>
                     <Text
@@ -54,6 +72,7 @@ export function CancelAppointmentModal(props: Appointment) {
                         variant="transparent"
                         onClick={handleCancel}
                         color="gray"
+                        disabled={isLoading}
                     >
                         Cancel
                     </Button>
@@ -61,6 +80,7 @@ export function CancelAppointmentModal(props: Appointment) {
                         variant="filled"
                         color="red"
                         onClick={handleCancel}
+                        loading={isLoading}
                     >
                         Confirm
                     </Button>

@@ -1,47 +1,17 @@
-import { SlideUp, StatusBadge } from "@/components/common"
-import { AppointmentStatus } from "@/constants"
-import { Group } from "@mantine/core"
-import dayjs from "dayjs"
-import { Column, MantineTable } from "../common/MantineTable"
-import { CancelAppointmentModal } from "./CancelAppointmentModal"
-import { ConfirmAppointmentModal } from "./ConfirmAppointmentModal"
+"use client";
 
-const data: Appointment[] = [
-    {
-        "id": 1,
-        "patientName": "Win Aye",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": false,
-        "cancelled": true
-    },
-    {
-        "id": 2,
-        "patientName": "Win Aye",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": false,
-        "cancelled": true
-    },
-    {
-        "id": 3,
-        "patientName": "Pyae Pyae",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": true,
-        "cancelled": false
-    },
-    {
-        "id": 4,
-        "patientName": "Pyae Pyae",
-        "doctorName": "Win Aye",
-        "dateTime": "2025-06-11T10:00",
-        "confirmed": false,
-        "cancelled": false
-    }
-]
+import { SlideUp, StatusBadge } from "@/components/common";
+import { AppointmentStatus, JWTRoleEnum } from "@/constants";
+import { useGetAppointments } from "@/hooks/query-hooks/useAppointment";
+import { useUserStore } from "@/states/zustand/user";
+import { Group } from "@mantine/core";
+import dayjs from "dayjs";
+import { Column, MantineTable } from "../common/MantineTable";
+import { CancelAppointmentModal } from "./CancelAppointmentModal";
+import { ConfirmAppointmentModal } from "./ConfirmAppointmentModal";
 
 export function AppointmentList() {
+    const { data } = useGetAppointments(JWTRoleEnum.STAFF);
 
     const columns: Column<Appointment>[] = [
         {
@@ -86,10 +56,16 @@ export function AppointmentList() {
                     justify="center"
                 >
                     <ConfirmAppointmentModal
-                        {...appointment}
+                        appointment={appointment}
+                        buttonProps={{
+                            disabled: appointment.confirmed || appointment.cancelled,
+                        }}
                     />
                     <CancelAppointmentModal
-                        {...appointment}
+                        appointment={appointment}
+                        buttonProps={{
+                            disabled: appointment.cancelled,
+                        }}
                     />
                 </Group>
             ),
@@ -109,7 +85,7 @@ export function AppointmentList() {
             </h2>
             <MantineTable
                 columns={columns}
-                data={data}
+                data={data || []}
                 rowKey={(appointment) => appointment.id.toString()}
             />
         </SlideUp>
