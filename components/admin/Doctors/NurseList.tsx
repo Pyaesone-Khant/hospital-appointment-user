@@ -1,21 +1,12 @@
 import { SlideUp, StatusBadge } from "@/components/common"
+import { RoleEnum } from "@/constants"
+import { useGetEmployees } from "@/hooks/query-hooks/useAdmin"
 import { Column, MantineTable } from "../common/MantineTable"
 import { DeleteEmployeeModal } from "../Employees"
 
-const data: Nurse[] = [
-    {
-        "nurseId": 1,
-        "fullName": "Ei Myat",
-        "email": "Singapore",
-        "address": "eimyatchelhmue7110@gmail.com",
-        "phone": "84161945",
-        "assignedDoctor": "No doctor assigned",
-        "active": true
-    }
-]
-
-
 export function NurseList() {
+
+    const { data } = useGetEmployees(RoleEnum.NURSE)
 
     const columns: Column<Nurse>[] = [
         {
@@ -66,7 +57,7 @@ export function NurseList() {
         >
             <MantineTable
                 columns={columns}
-                data={data}
+                data={data as Nurse[]}
                 rowKey={(nurse) => nurse.nurseId}
             />
         </SlideUp>

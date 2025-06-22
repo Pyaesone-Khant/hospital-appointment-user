@@ -1,37 +1,13 @@
 import { SlideUp, StatusBadge } from "@/components/common"
+import { RoleEnum } from "@/constants"
+import { useGetEmployees } from "@/hooks/query-hooks/useAdmin"
 import { Group } from "@mantine/core"
 import { Column, MantineTable } from "../common/MantineTable"
-import { DeleteEmployeeModal } from "../Employees"
-import { AssignDoctorShiftModal } from "./AssignDoctorShiftModal"
-
-const data: Doctor[] = [
-    {
-        "doctorId": 1,
-        "fullName": "Thiri",
-        "email": "Singapore",
-        "address": "thiriyaminsu145@gmail.com",
-        "phone": "84161945",
-        "specialization": "Cardiology",
-        "department": "Cardiology",
-        "assignedNurse": "No nurse assigned",
-        "active": false
-    },
-    {
-        "doctorId": 2,
-        "fullName": "Win Aye",
-        "email": "Singapore",
-        "address": "wwaye005@gmail.com",
-        "phone": "84161945",
-        "specialization": "Cardiology",
-        "department": "Cardiology",
-        "assignedNurse": "No nurse assigned",
-        "active": true
-    }
-]
-
-
+import { DeleteEmployeeModal, UpdateEmployeeModal } from "../Employees"
+import { AssignNurseToDoctor } from "./AssignNurseToDoctor"
 
 export function DoctorList() {
+    const { data } = useGetEmployees(RoleEnum.DOCTOR)
 
     const columns: Column<Doctor>[] = [
         {
@@ -75,8 +51,12 @@ export function DoctorList() {
                 <Group
                     justify="center"
                 >
-                    <AssignDoctorShiftModal
-                        {...doctor}
+                    <AssignNurseToDoctor
+                        doctorId={doctor.doctorId}
+                    />
+                    <UpdateEmployeeModal
+                        employee={doctor}
+                        role={RoleEnum.DOCTOR}
                     />
                     <DeleteEmployeeModal
                         employeeId={doctor.doctorId}
@@ -93,7 +73,7 @@ export function DoctorList() {
         >
             <MantineTable
                 columns={columns}
-                data={data}
+                data={data as Doctor[]}
                 rowKey={(row) => row.doctorId}
             />
         </SlideUp>

@@ -1,23 +1,29 @@
 "use client";
-import { Button, Modal } from "@mantine/core";
+import { RoleEnum } from "@/constants";
+import { useAssignDoctorShift, useGetEmployees } from "@/hooks/query-hooks/useAdmin";
+import { Button, Modal, Select } from "@mantine/core";
 import { DatePickerInput, TimePicker } from "@mantine/dates";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { Plus } from "lucide-react";
 
-export function AssignDoctorShiftModal(props: Doctor) {
+export function AssignDoctorShiftModal() {
 
     const [opened, { toggle }] = useDisclosure(false);
+
+    const { data: doctors } = useGetEmployees(RoleEnum.DOCTOR);
 
     const form = useForm({
         mode: "uncontrolled",
         initialValues: {
+            doctorId: "",
             date: dayjs().format('YYYY-MM-DD'),
             startTime: "",
             endTime: "",
         },
         validate: {
+            doctorId: isNotEmpty('Doctor is required'),
             date: (value) => (value ? null : 'Date is required'),
             startTime: (value) => (value ? null : 'Start time is required'),
             endTime: (value, { startTime }) => {
@@ -47,17 +53,24 @@ export function AssignDoctorShiftModal(props: Doctor) {
         }
     });
 
+    const { mutate, isLoading } = useAssignDoctorShift();
+
     const handleSubmit = (values: typeof form.values) => {
 
         const { startTime, endTime } = values;
 
         const payload: AssignDoctorShiftRequest = {
-            doctorId: props.doctorId,
             ...values,
             startTime: startTime.slice(0, 5),
             endTime: endTime.slice(0, 5),
         }
-        console.log(payload)
+
+        mutate(payload, {
+            onSuccess: () => {
+                toggle();
+                form.reset();
+            }
+        })
     };
 
     return (
@@ -72,18 +85,33 @@ export function AssignDoctorShiftModal(props: Doctor) {
                 onClick={toggle}
                 size="sm"
             >
-                Shift
+                Assign Shift
             </Button >
             <Modal
                 opened={opened}
                 onClose={toggle}
                 title="Assign Doctor Shift"
                 centered
+                closeOnClickOutside={!isLoading}
+                closeOnEscape={!isLoading}
             >
                 <form
                     onSubmit={form.onSubmit(handleSubmit)}
                     className="space-y-4"
                 >
+
+                    <Select
+                        label="Doctor"
+                        placeholder="Select a doctor"
+                        data={doctors?.map((doctor) => ({
+                            value: (doctor as Doctor).doctorId.toString(),
+                            label: (doctor as Doctor).fullName,
+                        })) || []}
+                        withAsterisk
+                        size="md"
+                        {...form.getInputProps('doctorId')}
+                    />
+
                     <DatePickerInput
                         variant="filled"
                         label="Date"
@@ -119,10 +147,12 @@ export function AssignDoctorShiftModal(props: Doctor) {
                     />
 
                     <Button
+                        mt={40}
                         type="submit"
                         fullWidth
-                        color="blue"
                         variant="filled"
+                        loading={isLoading}
+
                     >
                         Confirm
                     </Button>
