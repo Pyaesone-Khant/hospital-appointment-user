@@ -1,32 +1,12 @@
 "use client";
 
 import { AnimatedComponent, SlideUp, StatusBadge } from "@/components/common";
-import { ActionIcon } from "@mantine/core";
-import { Eye } from "lucide-react";
+import { useGetAllPatients } from "@/hooks/query-hooks/useAdmin";
 import { Column, MantineTable } from "../common/MantineTable";
 
-const data: User[] = [
-    {
-        "id": 3,
-        "name": "Pyae Pyae",
-        "email": "ayewinwin510@gmail.com",
-        "phone": "84161945",
-        "address": "Singapore",
-        "role": "USER",
-        "active": true
-    },
-    {
-        "id": 6,
-        "name": "aye aye",
-        "email": "ayewinwin9901@gmail.com",
-        "phone": "84161945",
-        "address": "Singapore",
-        "role": "USER",
-        "active": true
-    }
-]
-
 export function PatientList() {
+
+    const { data } = useGetAllPatients();
 
     const columns: Column<User>[] = [
         {
@@ -50,11 +30,6 @@ export function PatientList() {
             textAlign: "left"
         },
         {
-            header: "Address",
-            accessor: "address",
-            textAlign: "left"
-        },
-        {
             header: "Status",
             accessor: (row) => (
                 <StatusBadge
@@ -65,22 +40,6 @@ export function PatientList() {
             ),
             textAlign: "center"
         },
-        {
-            header: "Actions",
-            accessor: (user: User) => (
-                <ActionIcon
-                    variant="subtle"
-                    color="blue"
-                    onClick={() => alert(`Edit patient ${user.name}`)}
-                    size="lg"
-                >
-                    <Eye
-                        size={18}
-                    />
-                </ActionIcon>
-            ),
-            textAlign: "center"
-        }
     ]
 
     return (
@@ -96,7 +55,7 @@ export function PatientList() {
             <SlideUp>
                 <MantineTable
                     columns={columns}
-                    data={data}
+                    data={data ?? []}
                     rowKey={(row) => row.id}
                 />
             </SlideUp>

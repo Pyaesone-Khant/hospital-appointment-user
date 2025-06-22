@@ -26,6 +26,8 @@ interface User {
     address: string;
     phone: string;
     role: RoleEnum;
+    specialization?: string;
+    department?: string;
     active?: boolean;
 }
 
@@ -61,7 +63,11 @@ interface Doctor extends Pick<User, "email" | "address" | "phone" | "active"> {
     assignedNurse: string;
 }
 
-interface Nurse extends Pick<Doctor, "fullName" | "email" | "address" | "phone" | "active"> {
+interface Nurse
+    extends Pick<
+        Doctor,
+        "fullName" | "email" | "address" | "phone" | "active"
+    > {
     nurseId: number;
     nurseId: number;
     assignedDoctor: string;
@@ -72,13 +78,47 @@ interface Staff extends Pick<User, "email" | "address" | "phone" | "active"> {
     fullName: string;
 }
 
+enum PaymentMethod {
+    CreditCard = "Credit Card",
+    Cash = "Cash",
+    BankTransfer = "Bank Transfer",
+    MobilePayment = "Mobile Payment"
+}
+
 interface Payment {
     id: number;
     patientName: string;
+    amount?: number;
+    method: PaymentMethod;
+    paymentDate: string;
+}
+
 interface Department {
     id: number;
     name: string;
 }
+
+interface DoctorShift {
+    available: boolean;
+    date: string;
+    departmentName: string;
+    doctorName: string;
+    endTime: string;
+    specialization: string;
+    startTime: string;
+}
+
+interface NurseShift {
+    "id": number,
+    "nurseName": string,
+    "date": string,
+    "startTime": string,
+    "endTime": string,
+    "departmentName": string,
+    "assignedDoctorName": string
+
+}
+
 interface Fee {
     id: number;
     name: string;

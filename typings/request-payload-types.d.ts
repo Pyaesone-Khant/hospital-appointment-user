@@ -40,7 +40,7 @@ interface AssignNurseRequest {
 }
 
 interface AssignDoctorShiftRequest {
-    doctorId: number;
+    doctorId: string;
     date: string;
     startTime: string;
     endTime: string;
@@ -49,19 +49,20 @@ interface AssignDoctorShiftRequest {
 
 // patient
 interface BookAppointmentRequest {
-    doctorId: number;
+    doctorId: string;
     dateTime: string
+    reason?: string
 }
 
 interface MakePaymentRequest {
     paymentId: number;
-    paymentMethod: string;
-    amount: number
+    paymentMethod: PaymentMethod;
+    totalAmount: number
 }
 
 // doctor
 interface AddMedicalRecordRequest {
-    patientName: number;
+    patientName: string;
     date: string;
     diagnosis: string;
     feeIds: number[]
