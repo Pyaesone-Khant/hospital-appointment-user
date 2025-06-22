@@ -14,6 +14,8 @@ export const useGetAppointments = (role: JWTRoleEnum) => {
                     return CLIENT_API.getDoctorAppointments();
                 case JWTRoleEnum.STAFF:
                     return CLIENT_API.getAllAppointments();
+                default:
+                    return [];
             }
         },
     });

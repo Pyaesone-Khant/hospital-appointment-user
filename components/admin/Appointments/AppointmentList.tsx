@@ -3,7 +3,6 @@
 import { SlideUp, StatusBadge } from "@/components/common";
 import { AppointmentStatus, JWTRoleEnum } from "@/constants";
 import { useGetAppointments } from "@/hooks/query-hooks/useAppointment";
-import { useUserStore } from "@/states/zustand/user";
 import { Group } from "@mantine/core";
 import dayjs from "dayjs";
 import { Column, MantineTable } from "../common/MantineTable";

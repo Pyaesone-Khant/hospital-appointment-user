@@ -23,7 +23,7 @@ export const useUpdateAppointmentStatus = () => {
         mutationFn: (payload: { appointmentId: number, data: UpdateAppointmentStatusRequest }) => CLIENT_API.updateAppointmentStatus(payload.appointmentId, payload.data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["allAppointments", "appointments"]
+                queryKey: ["appointments"]
             });
             showNotification({
                 title: "Success",
