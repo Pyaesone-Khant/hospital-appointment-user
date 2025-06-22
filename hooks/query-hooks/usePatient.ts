@@ -1,5 +1,6 @@
 import { JWTRoleEnum, queryClient } from "@/constants";
 import { CLIENT_API } from "@/services/axios-client";
+import { useUserStore } from "@/states/zustand/user";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -71,10 +72,13 @@ export const useMakePayment = () => {
 }
 
 export const useGetUserPaymentHistory = () => {
+
+    const jwt = useUserStore((state) => state.jwt);
+
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["paymentHistory"],
         queryFn: () => CLIENT_API.getUserPaymentHistory(),
-        enabled: !JWTRoleEnum.USER, // Only fetch if the user is not a regular user
+        enabled: jwt?.role === JWTRoleEnum.USER, // Only fetch if the user is not a regular user
     });
 
     return {

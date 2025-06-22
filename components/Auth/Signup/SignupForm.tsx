@@ -1,7 +1,7 @@
 import { useLoginContext } from "@/contexts/login.context";
 import { useSignUpContext } from "@/contexts/signup.context";
 import { useSignUp } from "@/hooks/query-hooks/useAuth";
-import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Button, PasswordInput, Text, Textarea, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 
 export function SignupForm() {
@@ -17,6 +17,7 @@ export function SignupForm() {
             email: '',
             password: '',
             confirmedPassword: '',
+            address: '',
         },
         validate: {
             name: isNotEmpty("Full Name is required!"),
@@ -82,6 +83,15 @@ export function SignupForm() {
                         {...form.getInputProps('confirmedPassword')}
                     />
                 </div>
+
+                <Textarea
+                    label="Address"
+                    placeholder="123 Main St, City, Country"
+                    minRows={2}
+                    maxRows={4}
+                    {...form.getInputProps('address')}
+                    variant="filled"
+                />
 
                 <Button
                     mt={40}

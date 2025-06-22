@@ -10,6 +10,7 @@ interface SignupRequest {
     password?: string;
     phone: string;
     confirmedPassword?: string;
+    address: string;
 }
 
 interface ChangePasswordRequest {
@@ -29,7 +30,7 @@ interface ResetPasswordRequest {
 
 // admin
 interface CreateStaffRequest extends SignupRequest {
-    address: string;
+    // address: string;
     role: "STAFF" | "DOCTOR" | "NURSE";
     department?: string;
     specialization?: string;
