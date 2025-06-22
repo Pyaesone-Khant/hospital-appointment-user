@@ -1,4 +1,3 @@
-import { RoleEnum } from "@/constants";
 import { ActionIcon, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Edit } from "lucide-react";
@@ -6,37 +5,19 @@ import { EmployeeForm } from "./EmployeeForm";
 
 export function UpdateEmployeeModal({
     employee,
-    role
 }: {
-    employee: Doctor | Nurse | Staff;
-    role: RoleEnum
+    employee: User;
 }) {
 
     const [opened, { toggle }] = useDisclosure(false);
-
-    const getEmployeeId = (role: RoleEnum) => {
-        switch (role) {
-            case RoleEnum.DOCTOR:
-                return (employee as Doctor).doctorId;
-            case RoleEnum.NURSE:
-                return (employee as Nurse).nurseId;
-            case RoleEnum.STAFF:
-                return (employee as Staff).staffId;
-            default:
-                return (employee as Staff).staffId;
-        }
-    };
-
-
-
     return (
         <>
             <ActionIcon
-                variant="default"
+                variant="light"
                 size="lg"
                 onClick={toggle}
                 color="blue"
-                c={"blue"}
+                disabled={!employee.active}
             >
                 <Edit
                     size={18}
@@ -51,17 +32,15 @@ export function UpdateEmployeeModal({
                 <EmployeeForm
                     initialValues={{
                         phone: employee.phone,
-                        name: employee.fullName,
+                        name: employee.name,
                         email: employee.email,
                         address: employee.address,
-                        role: role,
-                        department: (employee as Doctor).department || "",
-                        specialization: (employee as Doctor).specialization || "",
-                        password: "",
-                        confirmedPassword: ""
+                        role: employee.role,
+                        department: employee?.department || "",
+                        specialization: employee?.specialization || "",
                     }}
                     isEditing={true}
-                    employeeId={getEmployeeId((employee as unknown as User).role as RoleEnum)}
+                    employeeId={employee.id}
                     onCloseModal={toggle}
                 />
             </Modal>

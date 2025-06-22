@@ -4,16 +4,20 @@ import { useDisclosure } from "@mantine/hooks";
 import { Trash } from "lucide-react";
 
 export function DeleteEmployeeModal({
-    employeeId
+    employee
 }: {
-    employeeId: number;
+    employee: User;
 }) {
 
     const [opened, { toggle }] = useDisclosure(false);
     const { mutate, isLoading } = useDeleteEmployee();
 
     const handleDelete = () => {
-        mutate(employeeId);
+        mutate(employee.id, {
+            onSuccess: () => {
+                toggle();
+            }
+        });
     };
 
     return (
@@ -24,7 +28,7 @@ export function DeleteEmployeeModal({
                 size="lg"
                 onClick={toggle}
                 title="Delete Employee"
-
+                disabled={!employee.active || isLoading}
             >
                 <Trash
                     size={18}

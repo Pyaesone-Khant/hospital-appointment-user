@@ -2,11 +2,14 @@
 
 import { SlideUp } from "@/components/common";
 import { RoleEnum } from "@/constants";
+import { useGetAllUsers } from "@/hooks/query-hooks/useAdmin";
 import { Divider, Group, Select } from "@mantine/core";
 import { useState } from "react";
-import { DoctorList, NurseList } from "../Doctors";
-import { StaffList } from "../Staffs";
+import { Column, MantineTable } from "../common/MantineTable";
+import { AssignNurseToDoctor } from "../Doctors/AssignNurseToDoctor";
 import { AddEmployeeModal } from "./AddEmployeeModal";
+import { DeleteEmployeeModal } from "./DeleteEmployeeModal";
+import { UpdateEmployeeModal } from "./UpdateEmployeeModal";
 
 export function EmployeeList() {
 
@@ -27,7 +30,76 @@ export function EmployeeList() {
             default:
                 return "Employees List";
         }
+    };
+
+    const { data } = useGetAllUsers();
+
+    const doctors = data?.filter(user => user.role === RoleEnum.DOCTOR);
+    const nurses = data?.filter(user => user.role === RoleEnum.NURSE);
+    const staffs = data?.filter(user => user.role === RoleEnum.STAFF);
+
+    const getFilteredData = () => {
+        switch (employeeType) {
+            case RoleEnum.DOCTOR:
+                return doctors;
+            case RoleEnum.NURSE:
+                return nurses;
+            case RoleEnum.STAFF:
+                return staffs;
+            default:
+                return data;
+        }
     }
+
+    const columns: Column<User>[] = [
+        {
+            header: "Name",
+            accessor: "name",
+        },
+        {
+            header: "Email",
+            accessor: "email",
+        },
+        {
+            header: "Phone",
+            accessor: "phone",
+        },
+        {
+            header: "Address",
+            accessor: "address",
+        },
+        {
+            header: "Status",
+            accessor: (row) => (
+                <span className={row.active ? "text-green-500" : "text-red-500"}>
+                    {row.active ? "Active" : "Inactive"}
+                </span>
+            ),
+            textAlign: "center"
+        },
+        {
+            header: "Department",
+            accessor: (row) => row?.department || "N/A",
+        },
+        {
+            header: "Specialization",
+            accessor: (row) => row?.specialization || row?.department || "N/A"
+        },
+        {
+            header: "Actions",
+            accessor: (user) => (
+                <Group justify="center">
+                    <UpdateEmployeeModal
+                        employee={user}
+                    />
+                    <DeleteEmployeeModal
+                        employee={user}
+                    />
+                </Group>
+            ),
+            textAlign: "center"
+        }
+    ]
 
     return (
         <section>
@@ -49,7 +121,9 @@ export function EmployeeList() {
                         size="md"
                         width={100}
                     />
-                    <AddEmployeeModal />
+                    <AddEmployeeModal
+                        employeeType={employeeType}
+                    />
                 </Group>
             </SlideUp>
 
@@ -58,23 +132,20 @@ export function EmployeeList() {
                 my={20}
             />
 
-            {
-                employeeType === RoleEnum.DOCTOR && (
-                    <DoctorList />
-                )
-            }
-
-            {
-                employeeType === RoleEnum.NURSE && (
-                    <NurseList />
-                )
-            }
-
-            {
-                employeeType === RoleEnum.STAFF && (
-                    <StaffList />
-                )
-            }
+            <SlideUp
+                className="space-y-4"
+            >
+                {
+                    employeeType === RoleEnum.DOCTOR && (
+                        <AssignNurseToDoctor />
+                    )
+                }
+                <MantineTable
+                    data={getFilteredData() ?? []}
+                    columns={columns}
+                    rowKey={(row) => row.id}
+                />
+            </SlideUp>
         </section>
     )
 }

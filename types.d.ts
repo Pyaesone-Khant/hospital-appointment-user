@@ -24,7 +24,7 @@ interface User {
     name: string;
     email: string;
     address: string;
-    phone: string
+    phone: string;
     role: RoleEnum;
     active?: boolean;
 }
@@ -43,6 +43,7 @@ enum JWTRoleEnum {
     PATIENT = "ROLE_PATIENT",
     ADMIN = "ROLE_ADMIN",
     NURSE = "ROLE_NURSE",
+    USER = "ROLE_USER",
 }
 
 interface JWT {

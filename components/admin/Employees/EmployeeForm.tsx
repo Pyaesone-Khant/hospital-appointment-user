@@ -1,5 +1,5 @@
 import { RoleEnum } from "@/constants";
-import { useCreateEmployee, useUpdateEmployee } from "@/hooks/query-hooks/useAdmin";
+import { useCreateEmployee, useGetAllDepartments, useUpdateEmployee } from "@/hooks/query-hooks/useAdmin";
 import { Button, Flex, PasswordInput, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
@@ -22,7 +22,7 @@ export function EmployeeForm({
         validate: {
             name: (value) => (value.length < 2 ? "Name must be at least 2 characters" : null),
             email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-            phone: (value) => (/^\d{8}$/.test(value) ? null : "Phone number must be 8 digits"),
+            phone: (value) => (/^\d{8,11}$/.test(value) ? null : "Invalid phone number!"),
             address: (value) => (value?.length < 5 ? "Address must be at least 5 characters" : null),
             password: (value) => (value && value?.length < 6 ? "Password must be at least 6 characters" : null),
             confirmedPassword: (value, values) => (value && value !== values.password ? "Passwords do not match" : null),
@@ -42,6 +42,8 @@ export function EmployeeForm({
         }
     });
 
+    const { data } = useGetAllDepartments();
+
     const { mutate: onCreate, isLoading: isCreating } = useCreateEmployee();
 
     const { mutate: onUpdate, isLoading: isUpdating } = useUpdateEmployee();
@@ -50,9 +52,22 @@ export function EmployeeForm({
         if (isEditing && employeeId) {
             delete values?.confirmedPassword;
             delete values?.password;
-            onUpdate({ employeeId, data: values });
+            onUpdate({ employeeId, data: values }, {
+                onSuccess: (data) => {
+                    if (data.success) {
+                        onCloseModal();
+                    }
+                }
+            });
         } else {
-            onCreate(values);
+            onCreate(values, {
+                onSuccess: (data) => {
+                    if (data.success) {
+                        form.reset();
+                        onCloseModal();
+                    }
+                }
+            });
         }
     }
 
@@ -87,6 +102,7 @@ export function EmployeeForm({
                         classNames={{
                             root: "w-full"
                         }}
+                        readOnly={isEditing}
                     />
 
                 </Flex>
@@ -118,6 +134,8 @@ export function EmployeeForm({
                     label="Address"
                     placeholder="Enter staff address"
                     {...form.getInputProps("address")}
+                    size="md"
+                    withAsterisk
                 />
 
                 {
@@ -155,9 +173,13 @@ export function EmployeeForm({
                             gap={20}
                             direction={{ base: "column", sm: "row" }}
                         >
-                            <TextInput
+                            <Select
                                 label="Department"
-                                placeholder="Enter department"
+                                placeholder="Select department"
+                                data={data?.map(department => ({
+                                    value: department.name,
+                                    label: department.name
+                                })) || []}
                                 {...form.getInputProps("department")}
                                 withAsterisk
                                 classNames={{
@@ -187,11 +209,13 @@ export function EmployeeForm({
                         variant="transparent"
                         color="black"
                         onClick={onCloseModal}
+                        disabled={isCreating || isUpdating}
                     >
                         Cancel
                     </Button>
                     <Button
                         type="submit"
+                        loading={isCreating || isUpdating}
                     >
                         Confirm
                     </Button>
