@@ -4,7 +4,10 @@ import { createApi, setApiToken } from "./api";
 import { getJwtToken } from "./getJwtToken";
 
 export const axiosClient = axios.create({
-    baseURL: BASE_URL
+    baseURL: BASE_URL,
+    headers: {
+        "ngrok-skip-browser-warning": "69420",
+    }
 })
 
 const { jwt } = getJwtToken();

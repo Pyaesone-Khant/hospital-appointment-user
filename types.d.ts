@@ -75,6 +75,10 @@ interface Staff extends Pick<User, "email" | "address" | "phone" | "active"> {
 interface Payment {
     id: number;
     patientName: string;
+interface Department {
+    id: number;
+    name: string;
+}
     amount: number;
     method: string;
     paymentDate: string

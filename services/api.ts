@@ -32,7 +32,10 @@ export const createApi = (apiInstance: AxiosInstance) => {
 
         assignDoctorShift: (data: AssignDoctorShiftRequest) => apiInstance.post('/admin/addSchedule', data),
 
-        getAllDoctorShifts: () => apiInstance.get(`/admin/allDoctorSchedules`),
+        getAllDepartments: (): Promise<Department[]> => apiInstance.get('/admin/allDepartments'),
+
+        addDepartment: (data: CreateDepartmentRequest) => apiInstance.post('/admin/addDepartment', data),
+
 
         // patient
         bookAppointment: (data: BookAppointmentRequest) => apiInstance.post('/users/bookAppointment', data),

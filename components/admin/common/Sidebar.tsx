@@ -2,55 +2,74 @@
 
 import { LogoutModal } from '@/components/common';
 import { MediCareLogo } from '@/components/common/icons';
+import { JWTRoleEnum } from '@/constants';
+import { useUserStore } from '@/states/zustand/user';
 import { Group, NavLink, Stack } from '@mantine/core';
 import { DynamicIcon, IconName } from 'lucide-react/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const NavLinks = [
-    {
-        label: 'Dashboard',
-        href: '/admin',
-        icon: 'layout-dashboard',
-    },
-    {
-        label: 'Employees',
-        href: '/admin/employees',
-        icon: 'user-search',
-    },
-    {
-        label: 'Appointments',
-        href: '/admin/appointments',
-        icon: 'calendar',
-    },
-    {
-        label: 'Patients',
-        href: '/admin/patients',
-        icon: 'users',
-    },
-    {
-        label: 'Payments',
-        href: '/admin/payments',
-        icon: 'credit-card',
-    },
-    {
-        label: 'Settings',
-        href: '/admin/settings',
-        icon: 'settings',
-    }
-] satisfies {
+const NavLinks: {
     label: string;
     href: string;
     icon: IconName;
-    children?: {
-        label: string;
-        href: string;
-        icon: IconName;
-    }[];
-}[]
+    roles: JWTRoleEnum[];
+}[] = [
+        {
+            label: 'Dashboard',
+            href: '/admin',
+            icon: 'layout-dashboard',
+            roles: [JWTRoleEnum.ADMIN, JWTRoleEnum.STAFF]
+        },
+        {
+            label: 'Employees',
+            href: '/admin/employees',
+            icon: 'user-search',
+            roles: [JWTRoleEnum.ADMIN]
+        },
+        // {
+        //     label: 'Appointments',
+        //     href: '/admin/appointments',
+        //     icon: 'calendar',
+        //     roles: [JWTRoleEnum.STAFF]
+        // },
+        {
+            label: 'Patients',
+            href: '/admin/patients',
+            icon: 'users',
+            roles: [JWTRoleEnum.ADMIN]
+        },
+        {
+            label: 'Departments',
+            href: '/admin/departments',
+            icon: 'building',
+            roles: [JWTRoleEnum.ADMIN]
+        },
+        {
+            label: 'Payments',
+            href: '/admin/payments',
+            icon: 'credit-card',
+            roles: [JWTRoleEnum.STAFF]
+        },
+        {
+            label: "Fees",
+            href: '/admin/fees',
+            icon: 'dollar-sign',
+            roles: [JWTRoleEnum.STAFF]
+        },
+        {
+            label: 'Settings',
+            href: '/admin/settings',
+            icon: 'settings',
+            roles: [JWTRoleEnum.ADMIN, JWTRoleEnum.STAFF]
+        }
+    ];
 
 export function Sidebar() {
     const pathname = usePathname();
+
+    const jwt = useUserStore(state => state.jwt);
+
 
     return (
         <nav className="flex flex-col gap-4 min-w-60 max-w-min w-full h-screen sticky top-0 bg-[var(--mantine-color-blue-0)] border-r border-blue-200">
@@ -77,6 +96,11 @@ export function Sidebar() {
             >
                 {
                     NavLinks.map((item) => {
+
+                        if (!jwt || !jwt.role) return null;
+
+                        if (!item.roles.includes(jwt?.role)) return null;
+
                         return (
                             <NavLink
                                 key={JSON.stringify(item)}

@@ -157,3 +157,40 @@ export const useDeleteEmployee = () => {
         ...rest
     }
 }
+
+export const useCreateDepartment = () => {
+    const { mutate, isPending: isLoading, ...rest } = useMutation({
+        mutationKey: ["createDepartment"],
+        mutationFn: (data: CreateDepartmentRequest) => CLIENT_API.addDepartment(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["allDepartments"]
+            });
+            showNotification({
+                title: "Success",
+                message: "Department created successfully",
+                color: "green"
+            });
+        }
+    });
+
+    return {
+        mutate,
+        isLoading,
+        ...rest
+    };
+}
+
+export const useGetAllDepartments = () => {
+    const { data, isLoading, ...rest } = useQuery({
+        queryKey: ["allDepartments"],
+        queryFn: () => CLIENT_API.getAllDepartments(),
+
+    });
+
+    return {
+        data,
+        isLoading,
+        ...rest
+    };
+}

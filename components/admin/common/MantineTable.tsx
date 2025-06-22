@@ -85,7 +85,7 @@ export function MantineTable<T>({
                             </TableTr>
                         ))) : (
                         <TableTr>
-                            <TableTd colSpan={columns.length} style={{ textAlign: "center" }}>
+                            <TableTd colSpan={columns.length} style={{ textAlign: "center", paddingBlock: "40px" }}>
                                 No data available
                             </TableTd>
                         </TableTr>
