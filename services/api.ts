@@ -81,7 +81,7 @@ export const createApi = (apiInstance: AxiosInstance) => {
 
         updateFee: (feeId: number, data: CreateFeeRequest) => apiInstance.put(`/staffs/fees/${feeId}`, data),
 
-        getAllFees: () => apiInstance.get(`/staffs/fees`),
+        getAllFees: (): Promise<Fee[]> => apiInstance.get(`/staffs/fees`),
 
         deleteFee: (feeId: number) => apiInstance.delete(`/staffs/fees/${feeId}`),
 

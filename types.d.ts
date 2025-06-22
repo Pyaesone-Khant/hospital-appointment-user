@@ -79,7 +79,9 @@ interface Department {
     id: number;
     name: string;
 }
+interface Fee {
+    id: number;
+    name: string;
     amount: number;
-    method: string;
-    paymentDate: string
+    description: string;
 }
