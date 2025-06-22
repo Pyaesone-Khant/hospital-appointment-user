@@ -7,20 +7,28 @@ export const useBookAppointment = () => {
     const { mutate, isPending: isLoading, ...rest } = useMutation({
         mutationKey: ["bookAppointment"],
         mutationFn: (data: BookAppointmentRequest) => CLIENT_API.bookAppointment(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["appointments"]
-            });
-            showNotification({
-                title: "Success",
-                message: "Appointment booked successfully",
-                color: "green"
-            })
+        onSuccess: (data) => {
+            if (data?.success) {
+                queryClient.invalidateQueries({
+                    queryKey: ["appointments"]
+                });
+                showNotification({
+                    title: "Success",
+                    message: "Appointment booked successfully",
+                    color: "green"
+                })
+            } else {
+                showNotification({
+                    title: "Error",
+                    message: data?.message || "Failed to book appointment",
+                    color: "red"
+                })
+            }
         }
     });
 
     return {
-        bookAppointment: mutate,
+        mutate,
         isLoading,
         ...rest
     }
@@ -30,11 +38,7 @@ export const useGetAppointments = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["appointments"],
         queryFn: () => CLIENT_API.getUserAppointments(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
@@ -50,7 +54,7 @@ export const useMakePayment = () => {
         mutationFn: (data: MakePaymentRequest) => CLIENT_API.makePayment(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["appointments"]
+                queryKey: ["appointments", "paymentHistory"]
             });
             showNotification({
                 title: "Success",
@@ -61,7 +65,7 @@ export const useMakePayment = () => {
     });
 
     return {
-        makePayment: mutate,
+        mutate,
         isLoading,
         ...rest
     }
@@ -71,11 +75,6 @@ export const useGetUserPaymentHistory = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["paymentHistory"],
         queryFn: () => CLIENT_API.getUserPaymentHistory(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
     return {
@@ -89,11 +88,7 @@ export const useGetUserMedicalRecordHistory = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["medicalRecordHistory"],
         queryFn: () => CLIENT_API.getUserMedicalRecordHistory(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
@@ -103,15 +98,11 @@ export const useGetUserMedicalRecordHistory = () => {
     };
 }
 
-export const useGetAllDoctorShifts = () => {
+export const useGetAvailableDoctors = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["doctorShifts"],
-        queryFn: () => CLIENT_API.getDoctorShifts(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        queryFn: () => CLIENT_API.getAvailableDoctors(),
+
     });
 
     return {
@@ -125,11 +116,7 @@ export const useGetDoctorsByDepartment = (department: string) => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["doctorsByDepartment", department],
         queryFn: () => CLIENT_API.getDoctorsWithSpecialization(department),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
@@ -137,4 +124,35 @@ export const useGetDoctorsByDepartment = (department: string) => {
         isLoading,
         ...rest
     };
+}
+
+export const useCancelAppointment = () => {
+    const { mutate, isPending: isLoading, ...rest } = useMutation({
+        mutationKey: ["cancelAppointment"],
+        mutationFn: (appointmentId: number) => CLIENT_API.cancelAppointment(appointmentId),
+        onSuccess: (data) => {
+            if (data.success) {
+                queryClient.invalidateQueries({
+                    queryKey: ["appointments"]
+                });
+                showNotification({
+                    title: "Success",
+                    message: "Appointment cancelled successfully",
+                    color: "green"
+                })
+            } else {
+                showNotification({
+                    title: "Error",
+                    message: data?.message || "Failed to cancel appointment",
+                    color: "red"
+                })
+            }
+        }
+    });
+
+    return {
+        mutate,
+        isLoading,
+        ...rest
+    }
 }

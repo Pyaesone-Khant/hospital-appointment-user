@@ -1,4 +1,4 @@
-import { queryClient } from "@/constants";
+import { JWTRoleEnum, queryClient } from "@/constants";
 import { CLIENT_API } from "@/services/axios-client";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -7,11 +7,7 @@ export const useGetAssignedShifts = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["assignedShifts"],
         queryFn: () => CLIENT_API.getAssignedShifts(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
@@ -25,11 +21,6 @@ export const useGetDoctorAppointments = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["doctorAppointments"],
         queryFn: () => CLIENT_API.getDoctorAppointments(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
     return {
@@ -52,6 +43,13 @@ export const useAddMedicalRecord = () => {
                 message: "Medical record added successfully",
                 color: "green"
             });
+        },
+        onError: (error: string) => {
+            showNotification({
+                title: "Error",
+                message: error ?? "Failed to add medical record",
+                color: "red"
+            });
         }
     });
 
@@ -66,11 +64,20 @@ export const useGetMedicalRecords = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["medicalRecords"],
         queryFn: () => CLIENT_API.getMedicalRecords(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+    });
+
+    return {
+        data,
+        isLoading,
+        ...rest
+    };
+}
+
+export const useGetDoctorPatients = () => {
+    const { data, isLoading, ...rest } = useQuery({
+        queryKey: ["doctorPatients"],
+        queryFn: () => CLIENT_API.getDoctorPatients(),
+
     });
 
     return {
@@ -85,11 +92,27 @@ export const useGetNurseShifts = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["nurseShifts"],
         queryFn: () => CLIENT_API.getNurseShifts(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
+    });
+
+    return {
+        data,
+        isLoading,
+        ...rest
+    };
+};
+
+export const useGetShitSchedule = (role: JWTRoleEnum) => {
+    const { data, isLoading, ...rest } = useQuery<DoctorShift[] | NurseShift[] | undefined>({
+        queryKey: ["shiftSchedule", role],
+        queryFn: () => {
+            switch (role) {
+                case JWTRoleEnum.DOCTOR:
+                    return CLIENT_API.getAssignedShifts();
+                case JWTRoleEnum.NURSE:
+                    return CLIENT_API.getNurseShifts();
+            }
+        },
     });
 
     return {
@@ -103,11 +126,7 @@ export const useGetNurseMedicalRecords = () => {
     const { data, isLoading, ...rest } = useQuery({
         queryKey: ["nurseMedicalRecords"],
         queryFn: () => CLIENT_API.getNurseMedicalRecords(),
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+
     });
 
     return {
