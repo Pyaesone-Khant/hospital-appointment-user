@@ -36,11 +36,10 @@ export function AddFee() {
     return (
         <>
             <Button
-                variant="outline"
                 onClick={toggle}
                 leftSection={
                     <Plus
-                        size={16}
+                        size={18}
                     />
                 }
             >

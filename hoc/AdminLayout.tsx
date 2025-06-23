@@ -17,13 +17,13 @@ export function AdminLayout({
 
     const jwt = useUserStore((state) => state.jwt);
 
-    if (!jwt || !jwt.accessToken) {
-        return redirect("/on-boarding");
-    }
+    // if (!jwt || !jwt.accessToken) {
+    //     return redirect("/on-boarding");
+    // }
 
-    if (jwt && (jwt.role !== JWTRoleEnum.ADMIN && jwt.role !== JWTRoleEnum.STAFF)) {
-        return redirect("/");
-    }
+    // if (jwt && (jwt.role !== JWTRoleEnum.ADMIN && jwt.role !== JWTRoleEnum.STAFF)) {
+    //     return redirect("/");
+    // }
 
 
     return (

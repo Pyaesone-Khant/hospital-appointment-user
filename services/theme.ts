@@ -1,4 +1,4 @@
-import { AvatarProps, ButtonProps, createTheme, MantineThemeOverride, PasswordInputProps, SelectProps, TextInputProps } from "@mantine/core";
+import { AvatarProps, ButtonProps, createTheme, MantineThemeOverride, NumberInput, NumberInputProps, PasswordInputProps, SelectProps, TextareaProps, TextInputProps } from "@mantine/core";
 
 const defaultProps = {
     size: "md",
@@ -39,6 +39,18 @@ export const theme: MantineThemeOverride = createTheme({
                 ...defaultProps,
                 variant: "filled",
             } as SelectProps,
+        },
+        Textarea: {
+            defaultProps: {
+                ...defaultProps,
+                variant: "filled",
+            } as TextareaProps
+        },
+        NumberInput: {
+            defaultProps: {
+                ...defaultProps,
+                variant: "filled",
+            } as NumberInputProps
         }
     }
 }

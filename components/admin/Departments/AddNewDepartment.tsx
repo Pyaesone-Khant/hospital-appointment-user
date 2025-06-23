@@ -33,10 +33,7 @@ export function AddNewDepartment() {
         <>
             <Button
                 leftSection={<Plus />}
-                variant="outline"
-                color="blue"
                 onClick={toggle}
-                size="sm"
             >
                 New Department
             </Button>
@@ -59,7 +56,6 @@ export function AddNewDepartment() {
                     <Flex justify="flex-end" gap={20}>
                         <Button
                             variant="transparent"
-                            color="gray"
                             onClick={toggle}
                             disabled={isLoading}
                         >
@@ -67,7 +63,6 @@ export function AddNewDepartment() {
                         </Button>
                         <Button
                             type="submit"
-                            color="blue"
                             loading={isLoading}
                         >
                             Create

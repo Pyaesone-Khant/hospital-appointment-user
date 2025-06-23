@@ -32,6 +32,7 @@ export function LoginForm() {
 
         mutate({ email, password }, {
             onSuccess: () => {
+                form.reset();
                 closeLoginModal();
             }
         })

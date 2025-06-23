@@ -37,7 +37,11 @@ export function SignupForm() {
     const { mutate, isLoading } = useSignUp();
 
     const handleSubmit = (values: typeof form.values) => {
-        mutate(values)
+        mutate(values, {
+            onSuccess: () => {
+                form.reset();
+            }
+        })
     }
 
     return (
@@ -90,7 +94,6 @@ export function SignupForm() {
                     minRows={2}
                     maxRows={4}
                     {...form.getInputProps('address')}
-                    variant="filled"
                 />
 
                 <Button

@@ -7,7 +7,7 @@ import { Column, MantineTable } from "../common/MantineTable";
 export function PatientList() {
 
     const { data } = useGetAllPatients();
-
+    
     const columns: Column<User>[] = [
         {
             header: "ID",
