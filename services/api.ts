@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 export const createApi = (apiInstance: AxiosInstance) => {
     return _thenData({
         // auth
-        signup: (data: SignupRequest): Promise<User> => apiInstance.post('/auth/signup', data),
+        signup: (data: SignupRequest): Promise<{ success: boolean, message: string }> => apiInstance.post('/auth/signup', data),
 
         login: (data: LoginRequest): Promise<JWT> => apiInstance.post('/auth/login', data),
 

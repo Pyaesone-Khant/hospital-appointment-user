@@ -60,17 +60,27 @@ export const useSignUp = () => {
     const { mutate, isPending: isLoading, ...rest } = useMutation({
         mutationKey: ["signup"],
         mutationFn: (data: SignupRequest) => CLIENT_API.signup(data),
-        onSuccess: () => {
-            notifications.show({
-                title: "Sign Up Successful",
-                message: "You can now log in with your credentials.",
-                color: "green",
-                autoClose: 3000,
-                withCloseButton: true,
-            });
-            closeSignUpModal();
-            openLoginModal();
-        }
+        onSuccess: (data) => {
+            if (data.success) {
+                notifications.show({
+                    title: "Sign Up Successful",
+                    message: "You can now log in with your credentials.",
+                    color: "green",
+                    autoClose: 3000,
+                    withCloseButton: true,
+                });
+                closeSignUpModal();
+                openLoginModal();
+            } else {
+                notifications.show({
+                    title: "Sign Up Failed",
+                    message: data.message || "An error occurred during sign up.",
+                    color: "red",
+                    autoClose: 3000,
+                    withCloseButton: true,
+                });
+            }
+        },
     });
 
     return {

@@ -38,8 +38,10 @@ export function SignupForm() {
 
     const handleSubmit = (values: typeof form.values) => {
         mutate(values, {
-            onSuccess: () => {
-                form.reset();
+            onSuccess: (data) => {
+                if (data.success) {
+                    form.reset();
+                }
             }
         })
     }

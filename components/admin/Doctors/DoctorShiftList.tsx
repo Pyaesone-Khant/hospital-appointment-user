@@ -31,7 +31,7 @@ export function DoctorShiftList() {
         {
             header: "Status",
             accessor: (row) => {
-                const isAvailable = row.available && dayjs(row.date).isSame(dayjs(), 'day');
+                const isAvailable = row.available && !dayjs().startOf('day').isAfter(dayjs(row.date).startOf('day'));
                 return (
                     <StatusBadge
                         color={isAvailable ? "green" : "red"}
