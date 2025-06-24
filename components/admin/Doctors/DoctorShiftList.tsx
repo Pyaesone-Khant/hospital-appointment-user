@@ -3,6 +3,7 @@
 import { SlideUp, StatusBadge } from "@/components/common";
 import { useGetAllDoctorShifts } from "@/hooks/query-hooks/useAdmin";
 import { Divider } from "@mantine/core";
+import dayjs from "dayjs";
 import { Column, MantineTable } from "../common/MantineTable";
 import { AssignDoctorShiftModal } from "./AssignDoctorShiftModal";
 
@@ -29,13 +30,16 @@ export function DoctorShiftList() {
         },
         {
             header: "Status",
-            accessor: (row) => (
-                <StatusBadge
-                    color={row.available ? "green" : "red"}
-                >
-                    {row.available ? "Available" : "Not Available"}
-                </StatusBadge>
-            )
+            accessor: (row) => {
+                const isAvailable = row.available && dayjs(row.date).isSame(dayjs(), 'day');
+                return (
+                    <StatusBadge
+                        color={isAvailable ? "green" : "red"}
+                    >
+                        {isAvailable ? "Available" : "Unavailable"}
+                    </StatusBadge>
+                )
+            }
         }
     ]
 

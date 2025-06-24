@@ -97,9 +97,9 @@ export function Sidebar() {
                 {
                     NavLinks.map((item) => {
 
-                        // if (!jwt || !jwt.role) return null;
+                        if (!jwt || !jwt.role) return null;
 
-                        // if (!item.roles.includes(jwt?.role)) return null;
+                        if (!item.roles.includes(jwt?.role)) return null;
 
                         return (
                             <NavLink
